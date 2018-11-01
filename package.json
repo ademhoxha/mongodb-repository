@@ -1,0 +1,29 @@
+{
+  "name": "mongodb-repository-wmf",
+  "version": "1.1.0",
+  "description": "Perform all CRUD operation in a easy way",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ademhoxha/mongodb-repository.git"
+  },
+  "keywords": [
+    "npm",
+    "mongodb",
+    "mongoose",
+    "entities",
+    "entity",
+    "repository",
+    "mongodbrepository",
+    "mongorepository"
+  ],
+  "author": "Adem Hoxha",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ademhoxha/mongodb-repository/issues"
+  },
+  "homepage": "https://github.com/ademhoxha/mongodb-repository#README"
+}
