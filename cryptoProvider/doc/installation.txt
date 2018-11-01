@@ -1,0 +1,3 @@
+The installation guide:
+
+1) npm install crypto
