@@ -12,8 +12,8 @@ mongodb-repository-wmf provides two base repositories (with callback logic):
 2) SecretMongoRepository
 ### Version 2
 The Promise logic is added in version 2, with two new promise based repositories:
-3) BaseMongoPromiseRepository 
-4) SecretMongoPromiseRepository
+1) BaseMongoPromiseRepository 
+2) SecretMongoPromiseRepository
 
 ### What's new in version 2
 In version 2 Promise based repositories can be used instead the old one (Callback based). <br />
