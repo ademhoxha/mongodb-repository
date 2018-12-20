@@ -17,7 +17,7 @@ The Promise logic is added in version 2, with two new promise based repositories
 
 ### What's new in version 2
 In version 2 Promise based repositories can be used instead the old one (Callback based). <br />
-Use the Promise version of the repository ( in example getBaseMongoPromiseRepository instead BaseMongoRepository)
+To do that use the Promise version of the repository ( in example getBaseMongoPromiseRepository instead BaseMongoRepository)
 ```javascript
 var GetBaseMongoPromiseRepository = require('mongodb-repository-wmf').MongoRepository.getBaseMongoPromiseRepository();
 class PersonRepository extends GetBaseMongoPromiseRepository {
@@ -25,7 +25,7 @@ class PersonRepository extends GetBaseMongoPromiseRepository {
 }
 ...
 ```
-And use the promise sintax to execute the operation:
+And write code in the Promise sintax to execute the operation:
 ```javascript
 personRepository.insert(insertData).then( (ret) => {console.log("all ok")}).catch( (err) => {console.log("error")});
 ```
@@ -34,7 +34,7 @@ Instead of the old one:
 personRepository.insert(insertData, (err, ret) => {
     if(err)
        return console.log("error in insert")
-    return findPerson();
+    return console.log("all ok")
 });
 ```
 
