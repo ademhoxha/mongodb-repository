@@ -46,7 +46,7 @@ require('mongodb-repository-wmf').MongoRepository.generateOnTheFlyRepository({
 ```
 The model loading is requested by `mongoose`, you have to do it just once for each schema. The repository will be created only when the operation insert is called.
 You do not have to care about the connection opening or the connection closing or the other mongoose issues, you must just specify the db url, the schema name and the schema model to be able to perform all the CRUD operations. In this case a prototype connection strategy was used.
-For more complete examples please see the [Examples](#Examples) section and the [Performances and Best Practies](#Performances and Best Practies) section for the best usage approach.
+For more complete examples please see the [Examples](#Examples) section and the [Performances and Best Practies](#Performances-and-Best-Practies) section for the best usage approach.
 ## Overview of the version 3
 The On The Fly Repository is added in the version 3 of `mongodb-repository-wmf` and it is the only Repository type that will be updated in the future. Version 2 or Version 1 features will still works because the `backward compatibility is guaranteed`.
 ### Configure the On The Fly Repository
