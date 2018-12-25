@@ -1,10 +1,11 @@
-3.0.0 / 2011-12-25
+3.0.0 / 2011-12-27
 ===================
 
   * Feature; The On-Fly Repository feature is added.
   * Feature; Now is possible to choose between Singleton or Prototype based Repository.
 
-  * Added; `PublicDBApi.generateOnFlyRepository` is now the only available Repository.
+  * Added; `OnTheFlyRepositoryFactory` is now the only available features from the module.
+  * Added; `onTheFlyRepositoryFactory.generateOnFlyRepository` is now the only available Repository.
   * Improved; `BaseMongoRepository.constructor` can now accept `data.url` (`data.dbName` is still valid for backward compatibility).
   * Changed; `mongooseProxy` class is now substitued with `mongoosePrototypeProxy`.
   * Added; `mongooseSingletonProxy` to have a Singleton Proxy.
@@ -12,11 +13,9 @@
   * Changed; `mongooseSchema` class is now substitued with `mongoosePrototypeSchema`.
   * Added; `mongooseSingletonSchema` to have a Singleton Schema.
   * Added; `schemaFactory` to generate the properly Schema.
-  * Deprecated; `PublicDBApi.getBaseMongoRepository` is now deprecated and `PublicDBApi.generateOnFlyRepository` must be used.
-  * Deprecated; `PublicDBApi.getSecretMongoRepository` is now deprecated and `PublicDBApi.generateOnFlyRepository` must be used.
-  * Deprecated; `PublicDBApi.getBaseMongoPromiseRepository` is now deprecated and `PublicDBApi.generateOnFlyRepository` must be used.
-  * Deprecated; `PublicDBApi.getSecretMongoPromiseRepository` is now deprecated and `PublicDBApi.generateOnFlyRepository` must be used.
-  * Improved;  `models` now JSON is updated and not overrided.
+  * Deprecated; `PublicDBApi` is now deprecated and `PublicDBApi.generateOnFlyRepository` must be used.
+  * Improved; `models` now JSON is updated and not overrided.
+  * Fixed; `mongoose` `deprecationwarning` `DeprecationWarning: collection.findAndModify is deprecated.` is now fixed.
   * Added; `errorFactory` is added to generalize the errors.
   * Improved; Package Structure.
   * Added; `test` folder with all the test cases.
