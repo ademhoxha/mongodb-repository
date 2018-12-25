@@ -1,7 +1,7 @@
 3.0.0 / 2011-12-27
 ===================
 
-  * Feature; The On-Fly Repository feature is added.
+  * Feature; The On The Fly Repository feature is added.
   * Feature; Now is possible to choose between Singleton or Prototype based Repository.
 
   * Added; `OnTheFlyRepositoryFactory` is now the only available features from the module.
