@@ -1,15 +1,42 @@
 {
-  "name": "mongodb-repository-wmf",
-  "version": "2.0.0",
-  "description": "Perform all CRUD operation in a easy way",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "_from": "mongodb-repository-wmf@^2.0.3",
+  "_id": "mongodb-repository-wmf@2.0.3",
+  "_inBundle": false,
+  "_integrity": "sha512-xH0ZxiJZjIzsnhrcteji7Eq5JoHH80PLO9+vcIogIYlIsGkT5yI4bEJg8b0nU769Wds74zwechKnPeLq/5NFvg==",
+  "_location": "/mongodb-repository-wmf",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "mongodb-repository-wmf@^2.0.3",
+    "name": "mongodb-repository-wmf",
+    "escapedName": "mongodb-repository-wmf",
+    "rawSpec": "^2.0.3",
+    "saveSpec": null,
+    "fetchSpec": "^2.0.3"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ademhoxha/mongodb-repository.git"
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/mongodb-repository-wmf/-/mongodb-repository-wmf-2.0.3.tgz",
+  "_shasum": "541ee2b2e339d3c321fae251d82d08c7b8879093",
+  "_spec": "mongodb-repository-wmf@^2.0.3",
+  "_where": "D:\\Sviluppo\\wmf\\mongodb-repository\\test",
+  "author": {
+    "name": "Adem Hoxha"
   },
+  "bugs": {
+    "url": "https://github.com/ademhoxha/mongodb-repository/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "mongoose": "^5.1.8",
+    "crypto": "^1.0.1"
+  },
+  "deprecated": false,
+  "description": "Create On The Fly Repository And Perform CRUD Operation In One Single Line Of Code!",
+  "homepage": "https://github.com/ademhoxha/mongodb-repository#README",
   "keywords": [
     "npm",
     "mongodb",
@@ -20,13 +47,15 @@
     "mongodbrepository",
     "mongorepository"
   ],
-  "author": "Adem Hoxha",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ademhoxha/mongodb-repository/issues"
+  "main": "index.js",
+  "name": "mongodb-repository-wmf",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ademhoxha/mongodb-repository.git"
   },
-  "homepage": "https://github.com/ademhoxha/mongodb-repository#README",
-  "dependencies": {
-    "mongoose": "^5.4.0"
-  }
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "2.0.3"
 }

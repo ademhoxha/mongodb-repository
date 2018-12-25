@@ -1,7 +1,6 @@
 var repository = require('mongodb-repository-wmf').MongoRepository;
-
-var GetBaseMongoPromiseRepository = repository.getBaseMongoPromiseRepository();
-class PersonRepository extends GetBaseMongoPromiseRepository {
+var BaseMongoRepository = repository.getBaseMongoRepository();
+class PersonRepository extends BaseMongoRepository {
     constructor() {
         var data = {}
         data.dbName = 'mongodb://localhost/test'; // use your connection string		
@@ -16,9 +15,9 @@ var model = {
         secondName: String,
         otherInfo : {}
     },
+    /* other schemas*/
 }
-repository.setModel(model);
-
+repository.setModel(model); // mongoose require the model loading
 
 var person = {
     firstName : "Marcus",
@@ -30,4 +29,8 @@ var insertData = {
 }
 
 var personRepository = new PersonRepository();
-personRepository.insert(insertData).then( (ret) => {console.log(ret)}).catch( (err) => {console.log(err)});
+personRepository.find(insertData, (err, ret) => {
+    if(err)
+       return console.log(err);
+    return console.log(ret);
+});
