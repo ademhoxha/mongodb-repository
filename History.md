@@ -1,4 +1,4 @@
-3.0.0 / 2011-12-27
+3.0.0 / 2011-12-25
 ===================
 
   * Feature; The On-Fly Repository feature is added.
