@@ -1,4 +1,4 @@
-3.0.0 / 2019-01-02
+3.0.0 / 2018-12-26
 ===================
 
   * Feature; The On The Fly Repository feature is added.

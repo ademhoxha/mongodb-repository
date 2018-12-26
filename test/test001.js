@@ -1,5 +1,5 @@
 /** 
- * How to execute two CRUD operations generating two On The Fly Repositories without code line break (just one continuous code line)
+ * How to execute two CRUD operations generating two On The Fly Repositories without any code line break (just one continuous code line)
  * connection strategy : prototype
  */
 

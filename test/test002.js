@@ -1,6 +1,6 @@
 /** 
- * How to execute two CRUD operations generating two On The Fly Repositories without code line break (just one continuous code line)
- * connection strategy : prototype
+ * How to execute two CRUD operations generating two On The Fly Repositories and close the singleton connection without code line break (just one continuous code line)
+ * connection strategy : singleton
  */
 
 const OnTheFlyRepositoryFactory = require('mongodb-repository-wmf').OnTheFlyRepositoryFactory;
