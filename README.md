@@ -1,6 +1,6 @@
 # mongodb-repository-wmf
 ___
-*A fine JavaScript module for using on the fly created repository based on mongoose and designed over the JavaScript promises API*.
+*A fine JavaScript module for using on the fly created repositories based on mongoose and designed over the JavaScript promises API*.
 
 You don’t have to write an implementation of the repository you have just to use an **on the fly generated one**.
 
