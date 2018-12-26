@@ -62,20 +62,20 @@ OnTheFlyRepositoryFactory.generateOnTheFlyRepository({ // configure your on the 
     console.log(err)
 })
 ```
-The model loading `[3]` is requested by (mongoose)[https://www.npmjs.com/package/mongoose] [(doc)](https://mongoosejs.com/docs/models.html), you have to do it just once for each schema [(Model Loading)](#Model-Loading). 
+The model loading `[3]` is requested by [mongoose](https://www.npmjs.com/package/mongoose) [(doc)](https://mongoosejs.com/docs/models.html), you have to do it just once for each schema [(Model Loading)](#Model-Loading). 
 
-You do not have to care about the connection opening or the connection closing or the other (mongoose)[https://www.npmjs.com/package/mongoose] issues, you have just to configure the reposity `[1]` specifying:
+You do not have to care about the connection opening or the connection closing or the other [mongoose](https://www.npmjs.com/package/mongoose) issues, you have just to configure the reposity `[1]` specifying:
 1) the db url [(Configure the On The Fly Repository)](#Configure-the-On-The-Fly-Repository)
 2) the schema name [(Configure the On The Fly Repository)](#Configure-the-On-The-Fly-Repository)
 3) the connection strategy [(Prototype Connection Strategy](#Prototype-Connection-Strategy) , [Singleton Connection Strategy)](#Singleton-Connection-Strategy).
 
 Only when the operation insert is called `[4]` a repository will be created on the fly. 
 
-A (mongoose)[https://www.npmjs.com/package/mongoose] query expression [(doc)](https://mongoosejs.com/docs/queries.html) must be passed to the insert operation `[5]`.
+A [mongoose](https://www.npmjs.com/package/mongoose) query expression [(doc)](https://mongoosejs.com/docs/queries.html) must be passed to the insert operation `[5]`.
 
 And the operation result `[6]` is a [JavaScript promise](https://www.promisejs.org/).
 
-The `ret` `[6]` and the `err` `[7]` objects are the (mongoose)[https://www.npmjs.com/package/mongoose] `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html).
+The `ret` `[6]` and the `err` `[7]` objects are the [mongoose](https://www.npmjs.com/package/mongoose) `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html).
 
 In the previuos example the prototype connection strategy was used `[2]`, so the on the fly created repository made the connection for you once the operation was invoked `[4]` and close the connection when the operation ended `[6]`. All it is done behind the scenes by `mongodb-repository-wmf`.
 
@@ -137,7 +137,7 @@ MongoRepository.generateOnTheFlyRepository({
 ```
 The singleton connection is associated to the `url` and not to the `schema` or to a specific on the fly repository. So, all on the fly repositories associated to the same `url` and with a `singleton connection strategy` will share the same connection.
 ### Model Loading
-Before executing any CRUD operation for a specific schema its model must be loaded if it was not loaded before, that is because `mongodb-repository-wmf` is based on (mongoose)[https://www.npmjs.com/package/mongoose] [(doc)](https://mongoosejs.com/docs/models.html).
+Before executing any CRUD operation for a specific schema its model must be loaded if it was not loaded before, that is because `mongodb-repository-wmf` is based on [mongoose](https://www.npmjs.com/package/mongoose) [(doc)](https://mongoosejs.com/docs/models.html).
 
 The model for a schema must be loaded only once.
 ```javascript
@@ -263,9 +263,9 @@ OnTheFlyRepositoryFactory.generateOnTheFlyRepository(personConfig).insert({
 ```
 This operation will insert a new Person with `firstName: "Adam"` and `secondName: "Fenix"`. 
 
-The `query` object can use all the (mongoose)[https://www.npmjs.com/package/mongoose] power for more complicated structures.
+The `query` object can use all the [mongoose](https://www.npmjs.com/package/mongoose) power for more complicated structures.
 
-The `ret` and the `err` objects are the (mongoose)[https://www.npmjs.com/package/mongoose] `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html)
+The `ret` and the `err` objects are the [mongoose](https://www.npmjs.com/package/mongoose) `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html)
 ##### Find And Find All
 To perform a find operation you must invoke the find method passing a JSON Object with the `query` field that specify the element to find.
 ```javascript
@@ -296,9 +296,9 @@ OnTheFlyRepositoryFactory.generateOnTheFlyRepository(personConfig).find({
 ```
 This operation will found all the element with `firstName: "Adam"`.
 
-The `query` object can use all the (mongoose)[https://www.npmjs.com/package/mongoose] power for more complicated structures.
+The `query` object can use all the [mongoose](https://www.npmjs.com/package/mongoose) power for more complicated structures.
 
-The `ret` and the `err` objects are the (mongoose)[https://www.npmjs.com/package/mongoose] `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html).
+The `ret` and the `err` objects are the [mongoose](https://www.npmjs.com/package/mongoose) `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html).
 
 
 To perform a find all operation you must pass an empty `query` object.
@@ -357,9 +357,9 @@ OnTheFlyRepositoryFactory.generateOnTheFlyRepository(personConfig).remove({
 ```
 This operation will remove all `People` with `firstName: "Adam"`.
 
-The `query` object can use all the (mongoose)[https://www.npmjs.com/package/mongoose] power for more complicated structures.
+The `query` object can use all the [mongoose](https://www.npmjs.com/package/mongoose) power for more complicated structures.
 
-The `ret` and the `err` objects are the (mongoose)[https://www.npmjs.com/package/mongoose] `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html).
+The `ret` and the `err` objects are the [mongoose](https://www.npmjs.com/package/mongoose) `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html).
 ##### Update
 To perform an update operation you must invoke the update method passing a JSON Object with the `query` field that specify the element to update and an `update` object with the fields that must be apdated.
 ```javascript
@@ -393,9 +393,9 @@ OnTheFlyRepositoryFactory.generateOnTheFlyRepository(personConfig).update({
 ```
 This operation will update all `People` with `firstName: "Adam"` to `firstName: "Marcus"`.
 
-The `query` and the `update` objects can use all the (mongoose)[https://www.npmjs.com/package/mongoose] power for more complicated structures.
+The `query` and the `update` objects can use all the [mongoose](https://www.npmjs.com/package/mongoose) power for more complicated structures.
 
-The `ret` and the `err` objects are the (mongoose)[https://www.npmjs.com/package/mongoose] `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html).
+The `ret` and the `err` objects are the [mongoose](https://www.npmjs.com/package/mongoose) `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html).
 ##### Chaining Repository Operations
 Thanks to the [JavaScript promises API](https://www.promisejs.org/) and the `mongodb-repository-wmf` capability to generate on the fly repository you can scale vertically without any code interruption.
 
@@ -484,9 +484,9 @@ OnTheFlyRepositoryFactory.generateOnTheFlyRepository(secretPersonConfig).insert(
 
 In this way the `firstSecretInfo` and `secondSecretInfo` fields will be crypted before the insertion.
 
-The `query` object can use all the (mongoose)[https://www.npmjs.com/package/mongoose] power for more complicated structures.
+The `query` object can use all the [mongoose](https://www.npmjs.com/package/mongoose) power for more complicated structures.
 
-The `ret` and the `err` objects are the (mongoose)[https://www.npmjs.com/package/mongoose] `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html).
+The `ret` and the `err` objects are the [mongoose](https://www.npmjs.com/package/mongoose) `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html).
 
 
 To read the data in an encrypted way you must configure the On The Fly Repository as well as done before for the insert.
@@ -524,9 +524,9 @@ OnTheFlyRepositoryFactory.generateOnTheFlyRepository(secretPersonConfig).find({
 ```
 Now, you will have `firstSecretInfo` and `secondSecretInfo` fields decrypted.
 
-The `query` object can use all the (mongoose)[https://www.npmjs.com/package/mongoose] power for more complicated structures.
+The `query` object can use all the [mongoose](https://www.npmjs.com/package/mongoose) power for more complicated structures.
 
-The `ret` and the `err` objects are the (mongoose)[https://www.npmjs.com/package/mongoose] `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html).
+The `ret` and the `err` objects are the [mongoose](https://www.npmjs.com/package/mongoose) `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html).
 ## Performances and Best Practies
 The repository and the connection associated to it will be created on the fly just when a [CRUD operation](#CRUD-Operations) is invoked. After the operation execution the connection will be closed if a [prototype connection strategy](#Prototype-Connection-Strategy) was choosed, otherwise the connection will stay open untill the [(close singleton connection method call)](#Singleton-Connection-Strategy).
 
