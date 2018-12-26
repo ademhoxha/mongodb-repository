@@ -8,7 +8,7 @@ You don’t have to write an implementation of the repository you have just to u
 
 No more need to care about the repository implementation or about opening and closing connections, it is all done behind the scenes by `mongodb-repository-wmf`.
 ___
-`mongodb-repository-wmf` is an easy and fast to use feature inspired to `Java Spring 5 MongoDb Reactive Repository` that gives to you an on the fly implementation of the [Repository Pattern](https://martinfowler.com/eaaCatalog/repository.html. 
+`mongodb-repository-wmf` is an easy and fast to use feature inspired to [Java Spring 5 MongoDb Reactive Repository](https://spring.io/blog/2016/11/28/going-reactive-with-spring-data) that gives to you an on the fly implementation of the [Repository Pattern](https://martinfowler.com/eaaCatalog/repository.html. 
 
 From the Martin Fowler [web site](https://martinfowler.com/eaaCatalog/repository.html):
 
