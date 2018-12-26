@@ -425,7 +425,7 @@ OnTheFlyRepositoryFactory.generateOnTheFlyRepository(secretPersonConfig).insert(
         firstName: "Adam",
         secondName: "Fenix",
         firstSecretInfo : "Secret",
-		secondSecretInfo : Secret"
+		secondSecretInfo : "Secret"
     }
 }).then(ret => {
 	console.log(ret)
