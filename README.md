@@ -4,7 +4,7 @@ ___
 
 You don’t have to write an implementation of the repository you have just to use an **on the fly generated one**.
 
-`mongodb-repository-wmf` implements the `Repository Pattern` over [mongoose](https://www.npmjs.com/package/mongoose) package.
+`mongodb-repository-wmf` implements the [Repository Pattern](https://martinfowler.com/eaaCatalog/repository.html) over [mongoose](https://www.npmjs.com/package/mongoose).
 
 No more need to care about the repository implementation or about opening and closing connections, it is all done behind the scenes by `mongodb-repository-wmf`.
 ___
