@@ -1,4 +1,4 @@
-3.0.0 / 2011-12-27
+3.0.0 / 2019-01-02
 ===================
 
   * Feature; The On The Fly Repository feature is added.
@@ -22,22 +22,22 @@
   * Updated; `package.json` has `crypto` dependency now.
   * Improved; `README.md`.
 
-2.0.3 / 2011-12-20
+2.0.3 / 2018-12-20
 ===================
 
   * Fixed; `mongoose` `deprecationwarning` in `MongooseSingletonProxy.constructor` for `connect(this.data.dbName, {useNewUrlParser: true});`.
 
-2.0.2 / 2011-12-20
+2.0.2 / 2018-12-20
 ===================
 
   * Improved; `README.md` with test cases.
 
-2.0.1 / 2011-12-20
+2.0.1 / 2018-12-20
 ===================
 
   * Improved; `README.md` with version 2 explanation.
 
-2.0.0 / 2011-12-20
+2.0.0 / 2018-12-20
 ===================
 
   * Feature; Promise Based Repository are added.
@@ -46,13 +46,13 @@
   * Added; Promise Based Repository `SecretMongoPromiseRepository`.
   * Improved; `README.md`.
 
-1.0.1 - 1.1.0 / 2011-02-02
+1.0.1 to 1.1.0 / 2018-02-02
 ==================
 
   * Improved; `README.md`.
   * Improved; Package Structure.
 
-1.0.0 / 2011-11-01
+1.0.0 / 2018-11-01
 ==================
 
   * Init mongodb-entities npm package becomes mongodb-repository-wmf.
