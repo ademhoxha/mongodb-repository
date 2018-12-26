@@ -4,7 +4,9 @@ ___
 
 You don’t have to write an implementation of the repository you have just to use an **on the fly generated one**.
 
-So, no need to care about the repository implementation or about opening and closing connections, it is all done behind the scenes by `mongodb-repository-wmf`.
+`mongodb-repository-wmf` implements the `Repository Pattern` over [mongoose](https://www.npmjs.com/package/mongoose) package.
+
+No more need to care about the repository implementation or about opening and closing connections, it is all done behind the scenes by `mongodb-repository-wmf`.
 ___
 `mongodb-repository-wmf` is an easy and fast to use feature inspired to `Java Spring 5 MongoDb Reactive Repository` that gives to you an on the fly implementation of the `Repository Pattern`. 
 
