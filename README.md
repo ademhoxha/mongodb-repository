@@ -82,7 +82,9 @@ In the previuos example the prototype connection strategy was used `[2]`, so the
 
 For more complex examples please see the [Examples](#Examples) section and the [Performances and Best Practies](#Performances-and-Best-Practies) section for the best usage approach.
 ## Overview of the version 3
-The On The Fly Repository is added in the version 3 of `mongodb-repository-wmf` and it is the only Repository type that will be updated in the future. Version 2 or Version 1 features will still works because the `backward compatibility is always guaranteed`.
+The On The Fly Repository is added in the version 3 of `mongodb-repository-wmf` and it is the only Repository type that will be updated in the future. 
+
+Version 2 or Version 1 features will still works because the `backward compatibility is always guaranteed`. For these versions please see [Backward Compatibility](#Backward-Compatibility).
 ### Configure the On The Fly Repository
 To configure the On The Fly Repository you must invoke the generate method with a configuration JSON Object.
 ```javascript
@@ -812,3 +814,9 @@ OnTheFlyRepositoryFactory.generateOnTheFlyRepository(personConfig).loadModel({
     console.log(err);
 })
 ```
+## Backward Compatibility
+Versions before version 3 are all deprecated. 
+
+The features of these old versions will still works because the backward compatibility is always guaranteed but the new features will not guaranteed for the old version. 
+
+The documentation for these old versions can be found on the deprecated npm package [mongodb-entities](https://www.npmjs.com/package/mongodb-entities).
