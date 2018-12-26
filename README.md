@@ -10,13 +10,13 @@ ___
 
 From the Martin Fowler [web site](https://martinfowler.com/eaaCatalog/repository.html):
 
-*A Repository mediates between the domain and data mapping layers, acting like an in-memory domain object collection. Client objects construct query specifications declaratively and submit them to Repository for satisfaction. Objects can be added to and removed from the Repository, as they can from a simple collection of objects, and the mapping code encapsulated by the Repository will carry out the appropriate operations behind the scenes.*
+*"A Repository mediates between the domain and data mapping layers, acting like an in-memory domain object collection. Client objects construct query specifications declaratively and submit them to Repository for satisfaction. Objects can be added to and removed from the Repository, as they can from a simple collection of objects, and the mapping code encapsulated by the Repository will carry out the appropriate operations behind the scenes."*
 
-It means that adding, removing, updating, and selecting DB items is done by straightforward methods of the repository, as for the standard JavaScript Array you have Array.prototype.push() for the Repository you have Repository.prototype.add().
+It means that adding, removing, updating, and selecting DB items is done by straightforward methods of the repository, as for the standard JavaScript Array you have Array.prototype.push() for the Repository you will have something like Repository.prototype.insert().
 
 And as for standard collection you are able to use these methods without writing their implementation. 
 
-You will be able to configure the `connection strategy` (singleton or prototype) and thanks to the promises API to `perform a CRUD operation in a non interrupted code sequence`. 
+You will be able to configure the `connection strategy` (singleton or prototype) and thanks to the promises API to `perform a CRUD operation in a vertically not interrupted code sequence`. 
 
 An on the fly generated repository `able to encrypt and decrypt data from and to DB` is also provided.
 ## Installation
@@ -36,11 +36,11 @@ Let see how to perform a single [insert](#Insert) operation using an `on the fly
 ```javascript
 const OnTheFlyRepositoryFactory = require('mongodb-repository-wmf').OnTheFlyRepositoryFactory;
 
-OnTheFlyRepositoryFactory.generateOnTheFlyRepository({ // configure your on the fly created repository [1]
+OnTheFlyRepositoryFactory.generateOnTheFlyRepository({ // configure your on the fly repository [1]
     url: 'mongodb://localhost/test', // use your connection string
     schemaName: 'Person',
     singleton: false // set to true if want to use a singleton connection strategy [2]
-}).loadModel({ // must loaded only for the first on the fly created Repository (mongoose requires it) [3]
+}).loadModel({ // model must loaded only for the first on the fly repository (mongoose requires it) [3]
     Person: {
         firstName: String,
         secondName: String,
@@ -48,7 +48,7 @@ OnTheFlyRepositoryFactory.generateOnTheFlyRepository({ // configure your on the 
             age: Number
         }
     }
-}).insert({ // a repository is created now on the fly and a new connection is opened now [4]
+}).insert({ // a repository is created now on the fly and a new connection is opened [4]
     query: { // use all the mongoose power writing your query [5]
         firstName: "Adam",
         secondName: "Fenix",
@@ -67,14 +67,13 @@ The model loading `[3]` is requested by `mongoose` [(doc)](https://mongoosejs.co
 You do not have to care about the connection opening or the connection closing or the other mongoose issues, you have just to configure the reposity `[1]` specifying:
 1) the db url [(Configure the On The Fly Repository)](#Configure-the-On-The-Fly-Repository)
 2) the schema name [(Configure the On The Fly Repository)](#Configure-the-On-The-Fly-Repository)
-3) the model [(Model Loading)](#Model-Loading)
-4) the connection strategy [(Prototype Connection Strategy](#Prototype-Connection-Strategy) , [Singleton Connection Strategy)](#Singleton-Connection-Strategy).
+3) the connection strategy [(Prototype Connection Strategy](#Prototype-Connection-Strategy) , [Singleton Connection Strategy)](#Singleton-Connection-Strategy).
 
 Only when the operation insert is called `[4]` a repository will be created on the fly. 
 
 A mongoose query expression [(doc)](https://mongoosejs.com/docs/queries.html) must be passed to the insert operation `[5]`.
 
-And the operation result `[6]` is a promise.
+And the operation result `[6]` is a [JavaScript promise](https://www.promisejs.org/).
 
 The `ret` `[6]` and the `err` `[7]` objects are the `mongoose` `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html).
 
@@ -137,7 +136,7 @@ MongoRepository.generateOnTheFlyRepository({
 })
 ```
 ### Model Loading
-Before executing any CRUD operation for a specific schema its model must be loaded (do it just once) if it was not loaded before, that is because `mongodb-repository-wmf` is based on `mongoose` [(doc)](https://mongoosejs.com/docs/models.html).
+Before executing any CRUD operation for a specific schema its model must be loaded if it was not loaded before, that is because `mongodb-repository-wmf` is based on `mongoose` [(doc)](https://mongoosejs.com/docs/models.html).
 
 The model for a schema must be loaded only once.
 ```javascript
@@ -173,7 +172,7 @@ var onFlyRep = OnTheFlyRepositoryFactory.loadModel({
 ```
 This is possible because the repository is created on the fly only when the CRUD operation is invoked (see [Prototype Connection Strategy](#Prototype-Connection-Strategy) and [Singleton Connection Strategy)](#Singleton-Connection-Strategy).
 
-If you want to use anotherrepository created on the fly with the same schemaName you do not have to load again the model. 
+If you want to use another repository created on the fly with the same schemaName you do not have to load again the model. 
 
 You must do it only if you want to ovverride that model or want to add a new one.
 ```javascript
@@ -190,7 +189,7 @@ var personRep = OnTheFlyRepositoryFactory.loadModel({
     // a prototype connection strategy will be used
 })
 
-var newPersonRep = OnTheFlyRepositoryFactory.generateOnTheFlyRepository({  // no model loading is required (you done it before)
+var newPersonRep = OnTheFlyRepositoryFactory.generateOnTheFlyRepository({  // no model loading is required (you did it before)
     url: 'mongodb://localhost/test',  // use your connection string
     schemaName: 'Person'
     // a prototype connection strategy will be used
@@ -206,7 +205,7 @@ var animalRep = OnTheFlyRepositoryFactory.generateOnTheFlyRepository({
     }
 })
 
-var newPersonRep2 = OnTheFlyRepositoryFactory.generateOnTheFlyRepository({  // no model loading is required (you done it before)
+var newPersonRep2 = OnTheFlyRepositoryFactory.generateOnTheFlyRepository({  // no model loading is required (you did it before)
     url: 'mongodb://localhost/test',  // use your connection string
     schemaName: 'Person'
     // a prototype connection strategy will be used
@@ -226,10 +225,10 @@ var animalRep = OnTheFlyRepositoryFactory.generateOnTheFlyRepository({
 So, each model must be loaded once and can be overwritten by loading it again.
 ### CRUD Operations
 Careless the connection strategy of the Repository you can perform:
-1) insert
-2) find (find all)
-3) remove
-4) update
+1) [Insert](#Insert)
+2) [Find](#Find-And-Find-All)
+3) [Remove](#Remove)
+4) [Update](#Update)
 
 All the examples follows the [Performances and Best Practies](#Performances-and-Best-Practies) guidelines.
 ##### Insert
@@ -266,7 +265,7 @@ This operation will insert a new Person with `firstName: "Adam"` and `secondName
 The `query` object can use all the `mongoose` power for more complicated structures.
 
 The `ret` and the `err` objects are the `mongoose` `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html)
-##### Find (Find All)
+##### Find And Find All
 To perform a find operation you must invoke the find method passing a JSON Object with the `query` field that specify the element to find.
 ```javascript
 const OnTheFlyRepositoryFactory = require('mongodb-repository-wmf').OnTheFlyRepositoryFactory;
@@ -301,7 +300,7 @@ The `query` object can use all the `mongoose` power for more complicated structu
 The `ret` and the `err` objects are the `mongoose` `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html).
 
 
-To perfomr a find all operation you must pass an empty `query` object.
+To perform a find all operation you must pass an empty `query` object.
 ```javascript
 const OnTheFlyRepositoryFactory = require('mongodb-repository-wmf').OnTheFlyRepositoryFactory;
 
@@ -391,13 +390,60 @@ OnTheFlyRepositoryFactory.generateOnTheFlyRepository(personConfig).update({
     console.log(err)
 })
 ```
-This operation will update all Persons with `firstName: "Adam"` to `firstName: "Marcus"`.
+This operation will update all `People` with `firstName: "Adam"` to `firstName: "Marcus"`.
 
 The `query` and the `update` objects can use all the `mongoose` power for more complicated structures.
 
 The `ret` and the `err` objects are the `mongoose` `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html).
+##### Chaining Repository Operations
+Thanks to the [JavaScript promises API](https://www.promisejs.org/) and the `mongodb-repository-wmf` capability to generate on the fly repository you can scale vertically without any code interruption.
+
+Let see how to chain repository operations.
+```javascript
+const OnTheFlyRepositoryFactory = require('mongodb-repository-wmf').OnTheFlyRepositoryFactory;
+
+const personConfig = { 
+    url: 'mongodb://localhost/test', // user your connection string
+    schemaName: 'Person', // schema name
+    singleton: false // prototype connection strategy
+}
+
+OnTheFlyRepositoryFactory.loadModel({ // [1]
+    Person: {
+        firstName: String,
+        secondName: String,
+    }
+});
+
+OnTheFlyRepositoryFactory.generateOnTheFlyRepository(personConfig).update({ // first repository operation [2]
+    query: {
+        firstName: "Marcus",
+        secondName: "Fenix"
+    },
+    update: {
+        firstName: "Cole"
+    }
+}).then(r1 => { // promise of the update operation [3]
+    console.log("**** update is ok ****");
+    console.log(r1);
+    return OnTheFlyRepositoryFactory.generateOnTheFlyRepository(personConfig).find({ // second repository operation [4]
+        query: {
+            firstName: "Cole"
+        }
+    });
+}).then(r2 => {
+    console.log("**** find is ok ****");
+    console.log(r2);
+}).catch(err => {
+    console.log("**** error ****");
+    console.log(err);
+})
+```
+After the [(Model Loading)](#Model-Loading) `[1]` a new on the fly repository is generated `[2]` and an [update](#Update) operation is executed. In the returned promise of the first operation `[3]` a new on the fly repository is created and a [find](#Find-And-Find-All) operation is returned `[4]` that it is itself a promise. 
+
+In this way is possible to chain an unlimited number of [CRUD Operations](#CRUD-Operations).
 ### Encryption
-An On The Fly Repository able to encrypt and decrypt data from and to DB is also provided by mongodb-repository-wmf. 
+An On The Fly Repository able to encrypt and decrypt data from and to DB is also provided by `mongodb-repository-wmf`. 
 ```javascript
 const OnTheFlyRepositoryFactory = require('mongodb-repository-wmf').OnTheFlyRepositoryFactory;
 
@@ -481,7 +527,7 @@ The `query` object can use all the `mongoose` power for more complicated structu
 
 The `ret` and the `err` objects are the `mongoose` `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html).
 ## Performances and Best Practies
-The repository and the connection associated to it will be created on the fly just when a CRUD operation is called. After the operation execution the connection will be closed if a [prototype connection strategy](#Prototype-Connection-Strategy) was choosed, otherwise the connection will stay open untill the [(close singleton connection method call)](#Singleton-Connection-Strategy).
+The repository and the connection associated to it will be created on the fly just when a [CRUD operation](#CRUD-Operations) is invoked. After the operation execution the connection will be closed if a [prototype connection strategy](#Prototype-Connection-Strategy) was choosed, otherwise the connection will stay open untill the [(close singleton connection method call)](#Singleton-Connection-Strategy).
 
 **Remember that the singleton connection strategy is associated to the url and not to the schema. So only one singleton connection can be opened for a specific url.**
 ```javascript
@@ -521,10 +567,10 @@ var newOTheFlyRep = OnTheFlyRepositoryFactory.generateOnTheFlyRepository(personC
 Based on the previous example the best strategy is to create always an on the fly Repository and to use it once without creating a varibale for it. 
 
 Moreover is convenient to load the model before the first on the fly Repository because you may not know who is the first on the fly Repository that will be called.
-1) Create a constant for the repository configuration (one for schema)
-2) [Load the model](#Model-Loading) before the first call (you can set the model directly in the *OnTheFlyRepositoryFactory*)
-3) Use whenever you want an on the fly Repository to perform a [CRUD operation](#CRUD-Operations)
-4) Always take advantage of promise API to scale vertically
+1) Create a constant for the [repository configuration](#Configure-the-On-The-Fly-Repository) (one for schema).
+2) [Load the model](#Model-Loading) before the first call (you can set the model directly in the *OnTheFlyRepositoryFactory*).
+3) Use whenever you want a *new* on the fly Repository to perform a [CRUD operation](#CRUD-Operations), do not store it in a variable.
+4) Always take advantage of [JavaScript promises API](https://www.promisejs.org/) to scale vertically by [chaining repository operations](#Chaining-Repository-Operations).
 ```javascript
 const OnTheFlyRepositoryFactory = require('mongodb-repository-wmf').OnTheFlyRepositoryFactory;
 
@@ -569,8 +615,13 @@ OnTheFlyRepositoryFactory.generateOnTheFlyRepository(personConfig).update({
 })
 
 ```
-The choice of the `connection strategy` is on you, `moongose` suggests to use a `singleton strategy connection` for a NodeJs application. Bust sometimes you may use a `prototype strategy connection`.
+The choice of the `connection strategy` is on you, `moongose` suggests to use a [Singleton Connection Strategy](#Singleton-Connection-Strategy) for a NodeJs application. Bust sometimes you may use a [Prototype Connection Strategy](#Prototype-Connection-Strategy).
 ## Examples ###
+Each example follows the `mongodb-repository-wmf`  [Performances and Best Practies](#Performances-and-Best-Practies) guidelines.
+1) Create a constant for the [repository configuration](#Configure-the-On-The-Fly-Repository) (one for schema).
+2) [Load the model](#Model-Loading) before the first call (you can set the model directly in the *OnTheFlyRepositoryFactory*).
+3) Use whenever you want a *new* on the fly Repository to perform a [CRUD operation](#CRUD-Operations), do not store it in a variable.
+4) Always take advantage of [JavaScript promises API](https://www.promisejs.org/) to scale vertically by [chaining repository operations](#Chaining-Repository-Operations).
 ##### Multiple Operations on the same schema using the same connection strategy
 See how to perform an update and a find [CRUD operations](#CRUD-Operations) with the an `on the fly created repository` using a [singleton connection strategy](#Singleton-Connection-Strategy) and closing it at the end.
 ```javascript
@@ -759,4 +810,4 @@ OnTheFlyRepositoryFactory.generateOnTheFlyRepository(personConfig).loadModel({
     console.log("**** error ****");
     console.log(err);
 })
-```-
+```
