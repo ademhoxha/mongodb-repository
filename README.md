@@ -1,5 +1,5 @@
 # mongodb-repository-wmf
-___
+
 *A fine JavaScript module for using on the fly created repositories based on mongoose and designed over the JavaScript promises API*.
 
 You don’t have to write an implementation of the repository you have just to use an **on the fly generated one**.
@@ -7,7 +7,7 @@ You don’t have to write an implementation of the repository you have just to u
 `mongodb-repository-wmf` implements the [Repository Pattern](https://martinfowler.com/eaaCatalog/repository.html) over [mongoose](https://www.npmjs.com/package/mongoose).
 
 No more need to care about the repository implementation or about opening and closing connections, it is all done behind the scenes by `mongodb-repository-wmf`.
-___
+
 `mongodb-repository-wmf` is an easy and fast to use feature inspired to [Java Spring 5 MongoDb Reactive Repository](https://spring.io/blog/2016/11/28/going-reactive-with-spring-data) that gives to you an on the fly implementation of the [Repository Pattern](https://martinfowler.com/eaaCatalog/repository.html). 
 
 From the Martin Fowler [web site](https://martinfowler.com/eaaCatalog/repository.html):
@@ -20,7 +20,7 @@ And as for standard collection you are able to use these methods without writing
 
 You will be able to configure the `connection strategy` (singleton or prototype) and thanks to the promises API to `perform a CRUD operation in a vertically not interrupted code sequence`. 
 
-An on the fly generated repository `able to encrypt and decrypt data from and to DB` is also provided.
+One on the fly generated repository `able to encrypt and decrypt data from and to DB` is also provided.
 ## Installation
 After the installation of [node.js](http://nodejs.org/) you must install [mongodb](https://www.mongodb.org/downloads) or use a database provider as [mLab](https://mlab.com/) . Then:
 
@@ -532,7 +532,7 @@ The `query` object can use all the [mongoose](https://www.npmjs.com/package/mong
 
 The `ret` and the `err` objects are the [mongoose](https://www.npmjs.com/package/mongoose) `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html).
 ## Performances and Best Practies
-The repository and the connection associated to it will be created on the fly just when a [CRUD operation](#CRUD-Operations) is invoked. After the operation execution the connection will be closed if a [prototype connection strategy](#Prototype-Connection-Strategy) was choosed, otherwise the connection will stay open untill the [(close singleton connection method call)](#Singleton-Connection-Strategy).
+The repository and the connection associated to it will be created on the fly just when a [CRUD operation](#CRUD-Operations) is invoked. After the operation execution the connection will be closed if a [prototype connection strategy](#Prototype-Connection-Strategy) was choosed, otherwise the connection will stay open untill the [close singleton connection method call](#Singleton-Connection-Strategy).
 
 **Remember that the singleton connection strategy is associated to the url and not to the schema. So only one singleton connection can be opened for a specific url.**
 ```javascript
@@ -628,7 +628,7 @@ Each example follows the `mongodb-repository-wmf`  [Performances and Best Practi
 3) Use whenever you want a *new* on the fly Repository to perform a [CRUD operation](#CRUD-Operations), do not store it in a variable.
 4) Always take advantage of [JavaScript promises API](https://www.promisejs.org/) to scale vertically by [chaining repository operations](#Chaining-Repository-Operations).
 ##### Multiple Operations on the same schema using the same connection strategy
-See how to perform an update and a find [CRUD operations](#CRUD-Operations) with the an `on the fly created repository` using a [singleton connection strategy](#Singleton-Connection-Strategy) and closing it at the end.
+See how to perform an update and a find [CRUD operations](#CRUD-Operations) with an `on the fly created repository` using a [singleton connection strategy](#Singleton-Connection-Strategy) and closing the singleton connection at the end.
 ```javascript
 const OnTheFlyRepositoryFactory = require('mongodb-repository-wmf').OnTheFlyRepositoryFactory;
 

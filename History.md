@@ -1,3 +1,33 @@
+3.0.4 / 2018-12-27
+===================
+
+* Added; `MongoDBOnTheFlyRepository` class to avoid repository internal methods call.
+* Improved;  implementation of `generateOnTheFlyRepository` method added in `OnTheFlyRepositoryFactory` now returns a `MongoDBOnTheFlyRepository`.
+* Fixed; `test004` now use a prototype connection strategy.
+* Improved; `package.json` License becames `MIT` and some `keywords` added.
+* Added; `LICENSE` file.
+
+3.0.3 / 2018-12-27
+===================
+
+* Fixed; `BaseMongoRepository` method `closeSingletonConnection` now return an error if the singleton connection is not opened.
+* Fixed; `BaseMongoRepository` method `initialize` now uses callback to detect invalid url connection.
+* Added;  method `openConnection` added in `MongooseProxyInterface` to use callback in the connection opening.
+* Added;  implementation of `openConnection` method added in `MongooseSingletonProxy`.
+* Added;  implementation of `openConnection` method added in `MongoosePrototypeProxy`.
+* Added; `test005` as multiple connections test example.
+
+3.0.2 / 2018-12-27
+===================
+
+* Fixed; `SecretMongoRepository` methods `closeSingletonConnection` and `loadModel` now call the super method.
+* Added; `test004` as Secret on the fly repository example.
+
+3.0.1 / 2018-12-26
+===================
+
+  * Improved; `README.md` fixed.
+
 3.0.0 / 2018-12-26
 ===================
 
@@ -21,6 +51,7 @@
   * Added; `test` folder with all the test cases.
   * Updated; `package.json` has `crypto` dependency now.
   * Improved; `README.md`.
+  * Added; `History.md`.
 
 2.0.3 / 2018-12-20
 ===================
@@ -55,4 +86,4 @@
 1.0.0 / 2018-11-01
 ==================
 
-  * Init mongodb-entities npm package becomes mongodb-repository-wmf.
+  * Initial `mongodb-entities` npm package becomes `mongodb-repository-wmf`.

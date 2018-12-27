@@ -1,28 +1,28 @@
 {
-  "_from": "mongodb-repository-wmf@^2.0.3",
-  "_id": "mongodb-repository-wmf@2.0.3",
+  "_from": "mongodb-repository-wmf",
+  "_id": "mongodb-repository-wmf@3.0.4",
   "_inBundle": false,
-  "_integrity": "sha512-xH0ZxiJZjIzsnhrcteji7Eq5JoHH80PLO9+vcIogIYlIsGkT5yI4bEJg8b0nU769Wds74zwechKnPeLq/5NFvg==",
+  "_integrity": "sha512-0iX0I8eAHaEojtNJpu8Tj0FTBcONW38lbSvJYxf1t3gpX9IVq3Wd1jbCYpmFiXzgOpiRe6f+Y/trYvcLGaEgXw==",
   "_location": "/mongodb-repository-wmf",
   "_phantomChildren": {},
   "_requested": {
-    "type": "range",
+    "type": "tag",
     "registry": true,
-    "raw": "mongodb-repository-wmf@^2.0.3",
+    "raw": "mongodb-repository-wmf",
     "name": "mongodb-repository-wmf",
     "escapedName": "mongodb-repository-wmf",
-    "rawSpec": "^2.0.3",
+    "rawSpec": "",
     "saveSpec": null,
-    "fetchSpec": "^2.0.3"
+    "fetchSpec": "latest"
   },
   "_requiredBy": [
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/mongodb-repository-wmf/-/mongodb-repository-wmf-2.0.3.tgz",
-  "_shasum": "541ee2b2e339d3c321fae251d82d08c7b8879093",
-  "_spec": "mongodb-repository-wmf@^2.0.3",
-  "_where": "D:\\Sviluppo\\wmf\\mongodb-repository\\test",
+  "_resolved": "https://registry.npmjs.org/mongodb-repository-wmf/-/mongodb-repository-wmf-3.0.4.tgz",
+  "_shasum": "1f462226358c9c4468eabd0a9cc8755b920c6fd4",
+  "_spec": "mongodb-repository-wmf",
+  "_where": "D:\\Sviluppo\\wmf\\v304Test",
   "author": {
     "name": "Adem Hoxha"
   },
@@ -31,23 +31,33 @@
   },
   "bundleDependencies": false,
   "dependencies": {
-    "mongoose": "^5.1.8",
-    "crypto": "^1.0.1"
+    "crypto": "^1.0.1",
+    "mongoose": "^5.1.8"
   },
   "deprecated": false,
-  "description": "Create On The Fly Repository And Perform CRUD Operation In One Single Line Of Code!",
+  "description": "Create On The Fly Repositories And Perform Multiple CRUD Operations In One Single Line Of Code!",
   "homepage": "https://github.com/ademhoxha/mongodb-repository#README",
   "keywords": [
     "npm",
     "mongodb",
     "mongoose",
+    "on the fly repository",
+    "mongoose on the fly repository",
+    "repository",
+    "repository pattern",
+    "mongodb repository",
+    "mongo repository",
+    "mongodb-repository",
+    "mongo-repository",
+    "mongodbrepository",
+    "mongorepository",
+    "mongo crud operations",
     "entities",
     "entity",
-    "repository",
-    "mongodbrepository",
-    "mongorepository"
+    "mongodb-entities",
+    "mongodb entities"
   ],
-  "license": "ISC",
+  "license": "MIT",
   "main": "index.js",
   "name": "mongodb-repository-wmf",
   "repository": {
@@ -57,5 +67,5 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "version": "2.0.3"
+  "version": "3.0.4"
 }
