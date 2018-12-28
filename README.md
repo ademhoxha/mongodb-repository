@@ -1,5 +1,7 @@
 # mongodb-repository-wmf
 
+[![npm](https://nodei.co/npm/mongodb-repository-wmf.png)](https://www.npmjs.com/package/mongodb-repository-wmf)
+
 *A fine JavaScript module for using on the fly created repositories based on mongoose and designed over the JavaScript promises API*.
 
 You don’t have to write an implementation of the repository you have just to use an **on the fly generated one**.
@@ -269,7 +271,8 @@ This operation will insert a new Person with `firstName: "Adam"` and `secondName
 
 The `query` object can use all the [mongoose](https://www.npmjs.com/package/mongoose) power for more complicated structures.
 
-The `ret` and the `err` objects are the [mongoose](https://www.npmjs.com/package/mongoose) `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html)
+The `ret` and the `err` objects are the [mongoose](https://www.npmjs.com/package/mongoose) `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html). 
+In case of successful operation `ret` will contain the inserted element.
 ##### Find And Find All
 To perform a find operation you must invoke the find method passing a JSON Object with the `query` field that specify the element to find.
 ```javascript
@@ -303,6 +306,7 @@ This operation will found all the element with `firstName: "Adam"`.
 The `query` object can use all the [mongoose](https://www.npmjs.com/package/mongoose) power for more complicated structures.
 
 The `ret` and the `err` objects are the [mongoose](https://www.npmjs.com/package/mongoose) `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html).
+In case of successful operation `ret` will contain the founded elements.
 
 
 To perform a find all operation you must pass an empty `query` object.
@@ -333,6 +337,8 @@ OnTheFlyRepositoryFactory.generateOnTheFlyRepository(personConfig).find({
 Now all the records will be founded.
 ##### Remove
 To perform a remove operation you must invoke the remove method passing a JSON Object with the `query` field that specify the element to remove.
+
+Note: the remove operation is a Remove All, so each matched element will be removed.
 ```javascript
 const OnTheFlyRepositoryFactory = require('mongodb-repository-wmf').OnTheFlyRepositoryFactory;
 
@@ -364,8 +370,11 @@ This operation will remove all `People` with `firstName: "Adam"`.
 The `query` object can use all the [mongoose](https://www.npmjs.com/package/mongoose) power for more complicated structures.
 
 The `ret` and the `err` objects are the [mongoose](https://www.npmjs.com/package/mongoose) `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html).
+In case of successful operation `ret` will be `{ n: #, ok: 1 }` where `#` is the number of removed element.
 ##### Update
 To perform an update operation you must invoke the update method passing a JSON Object with the `query` field that specify the element to update and an `update` object with the fields that must be apdated.
+
+Note: the update operation is an Update All, so each matched element will be updated.
 ```javascript
 const OnTheFlyRepositoryFactory = require('mongodb-repository-wmf').OnTheFlyRepositoryFactory;
 
@@ -400,6 +409,7 @@ This operation will update all `People` with `firstName: "Adam"` to `firstName: 
 The `query` and the `update` objects can use all the [mongoose](https://www.npmjs.com/package/mongoose) power for more complicated structures.
 
 The `ret` and the `err` objects are the [mongoose](https://www.npmjs.com/package/mongoose) `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html).
+In case of successful operation `ret` will be `{ n: #1, nModified: #2, ok: 1 }` where `#1` is the number of matched element and `#2` is the number of element that required the fields update.
 ##### Chaining Repository Operations
 Thanks to the [JavaScript promises API](https://www.promisejs.org/) and the `mongodb-repository-wmf` capability to generate on the fly repository you can scale vertically without any code interruption.
 

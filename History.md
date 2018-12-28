@@ -1,3 +1,19 @@
+3.1.0 / 2018-12-29
+===================
+
+* Pivot; `mongodb-repository-wmf` is now written in `typescript`.
+
+* Added; `mongoPromiseRepositoryInterface` is the interface that is returned.
+* Improved; the `crypto` part is the now a folder and not an indipendent part anymore.
+* Added; `oldRepositoryFactory` is the factory that support the version 1 and the version 2.
+* Improved; `JSDoc` is now added in `MongoPromiseRepositoryInterface` and in `OnTheFlyRepositoryFactory`.
+* Added; `.mongooseSchemaInterface` is added and used thanks to `typescript`.
+* Added; `.mongooseProxyInterface` is added and used thanks to `typescript`.
+* Fixed; `mongoose` `deprecationwarning` `DeprecationWarning: collection.remove is deprecated. Use deleteOne, deleteMany, or bulkWrite instead.` is now fixed by using  `deleteMany` in `MongoCRUD`.
+* Fixed; the update operation is now done by `updateMany` an not anymore by `findOneAndUpdate` in `MongoCRUD`, so is now an update all.
+* Improved; Package Structure.
+* Improved; `README.md` now has a card.
+
 3.0.4 / 2018-12-27
 ===================
 
@@ -31,6 +47,8 @@
 3.0.0 / 2018-12-26
 ===================
 
+  * Pivot; The On The Fly Repository now is the only supported repository, it is easy and fast to use.
+  
   * Feature; The On The Fly Repository feature is added.
   * Feature; Now is possible to choose between Singleton or Prototype based Repository.
 
