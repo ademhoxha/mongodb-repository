@@ -1,3 +1,11 @@
+3.1.1 / 2018-12-30
+===================
+
+* Added; `mocha` added into dev dependency.
+* Improved;  test cases now are written using `mocha`.
+* Fixed; `crypto` `Warning` `Warning: Use Cipheriv for counter mode of aes-256-ctr.` is now fixed by substituing `createCipher` and `createDecipher` methods with `createCipheriv` and `createDecipheriv` in `CTRCrypto`.
+* Improved; `README.md` is improved in the contributing part.
+
 3.1.0 / 2018-12-29
 ===================
 

@@ -34,7 +34,7 @@ $ npm i mongodb-repository-wmf
 const OnTheFlyRepositoryFactory = require('mongodb-repository-wmf').OnTheFlyRepositoryFactory;
 ```
 ## Contributors
-If you want to join me please send me an email: `adem.hoxha@hotmail.it`.
+Pull requests are always welcome! Please base pull requests against the master branch and be sure to pass all test cases and to update the `History.md` and the `README.md` if needed. To run the test cases plase execute `npm run test`.
 ## Take a Look
 Let see how to perform a single [insert](#Insert) operation using an `on the fly` created repository:
 ```javascript

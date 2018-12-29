@@ -38,6 +38,7 @@
   "deprecated": false,
   "description": "Create On The Fly Repositories And Perform Multiple CRUD Operations In One Single Line Of Code!",
   "devDependencies": {
+    "mocha": "^5.2.0",
     "typescript": "^3.2.2"
   },
   "homepage": "https://github.com/ademhoxha/mongodb-repository#README",
@@ -70,7 +71,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "types": "lib/index.d.ts",
   "version": "3.1.0"
