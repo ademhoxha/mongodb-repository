@@ -1,4 +1,4 @@
-3.1.1 / 2018-12-30
+3.1.1 / 2018-12-29
 ===================
 
 * Added; `mocha` added into dev dependency.
