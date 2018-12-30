@@ -31,13 +31,13 @@
   },
   "bundleDependencies": false,
   "dependencies": {
-    "@types/mongoose": "^5.3.5",
     "crypto": "^1.0.1",
     "mongoose": "^5.4.1"
   },
   "deprecated": false,
   "description": "Create On The Fly Repositories And Perform Multiple CRUD Operations In One Single Line Of Code!",
   "devDependencies": {
+    "@types/mongoose": "^5.3.5",
     "mocha": "^5.2.0",
     "typescript": "^3.2.2"
   },

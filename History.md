@@ -1,3 +1,9 @@
+3.1.2 / 2018-12-30
+===================
+
+* Improved; `@types/mongoose` is now a dev dependency.
+* Improved; `README.md` fixes.
+
 3.1.1 / 2018-12-29
 ===================
 

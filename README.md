@@ -2,7 +2,7 @@
 
 [![npm](https://nodei.co/npm/mongodb-repository-wmf.png)](https://www.npmjs.com/package/mongodb-repository-wmf)
 
-*A fine JavaScript module for using on the fly created repositories based on mongoose and designed over the JavaScript promises API*.
+*A fine JavaScript (and TypeScript) module for using on the fly created repositories based on mongoose and designed over the JavaScript promises API*.
 
 You don’t have to write an implementation of the repository you have just to use an **on the fly generated one**.
 
@@ -34,7 +34,7 @@ $ npm i mongodb-repository-wmf
 const OnTheFlyRepositoryFactory = require('mongodb-repository-wmf').OnTheFlyRepositoryFactory;
 ```
 ## Contributors
-Pull requests are always welcome! Please base pull requests against the master branch and be sure to pass all test cases and to update the `History.md` and the `README.md` if needed. To run the test cases plase execute `npm run test`.
+Pull requests are always welcome! Please base pull requests against the master branch and be sure to pass all test cases and to update the `History.md` and the `README.md` if needed. To run the test cases please execute `npm run test`.
 ## Take a Look
 Let see how to perform a single [insert](#Insert) operation using an `on the fly` created repository:
 ```javascript
@@ -89,6 +89,8 @@ For more complex examples please see the [Examples](#Examples) section and the [
 The On The Fly Repository is added in the version 3 of `mongodb-repository-wmf` and it is the only Repository type that will be updated in the future. 
 
 Version 2 or Version 1 features will still works because the `backward compatibility is always guaranteed`. For these versions please see [Backward Compatibility](#Backward-Compatibility).
+
+Since version `3.1.0` `mongodb-repository-wmf` is written in `typescript`.
 ### Configure the On The Fly Repository
 To configure the On The Fly Repository you must invoke the generate method with a configuration JSON Object.
 ```javascript
