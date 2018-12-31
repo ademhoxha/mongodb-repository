@@ -10,7 +10,7 @@ export class MongooseSingletonProxy implements MongooseProxyInterface {
 
     static mongooseInstances: any = {};
     private data: any;
-    private mongooseSchema : any;
+    private mongooseSchema: any;
 
     constructor(extData: any) {
         this.data = extData;
@@ -48,6 +48,8 @@ export class MongooseSingletonProxy implements MongooseProxyInterface {
 
     connectionClosed(): void {
         MongooseSingletonProxy.mongooseInstances[this.data.dbName] = null;
+        if (!this.mongooseSchema)
+            this.mongooseSchema = new MongooseSchema(MongooseSingletonProxy.mongooseInstances[this.data.dbName], this.data.dbName);
         this.mongooseSchema.connectionClosed();
     }
 

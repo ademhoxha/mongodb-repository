@@ -1,3 +1,28 @@
+3.1.3 / 2019-01-01
+===================
+
+* Feature; Insert Many is now possible, just passing an array to the insert function and the inserMany operation will be applied.
+* Feature; Errors are now returned errors for invalid parameters for repository generation or for invalid query parameters in a CRUD operation when a CRUD operation is invoked.
+
+* Improved; `mongoCRUD` in method `addInMongo` the function `save` is now `insertMany` in case of a vector of elements.
+* Added; `repositoryError` is now the custom error type for `mongodb-repository-wmf`.
+* Updated; `errorFactory` has now the new errors.
+* Improved; `baseMongoRepository` manages these new errors with three methods `checkQueryParameters`, `checkRepositoryParameters` and `isValidInsertManyObject`.
+* Improved; `secretMongoRepository` manages these new errors calling `super` methods and a new method `areValidateCryptoParameters` to see if `parameter` is a vector of strings.
+* Improved; `baseMongoRepository`now `closeSingletonConnection` close the connection in an more fast way and without needing the `schemaName` parameter.
+* Improved; `mongooseSingletonProxy`modified to manage the `closeSingletonConnection` without the `schemaName`.
+* Updated; In `connection.test` added the test case for `closeSingletonConnection` without the `schemaName`.
+* Added; `repositoryUtils` ina new folder `utils` with method needed for errors check.
+* Improved; In `model` the method `getSchemaJson` checks if the input parameter is defined and is a string.
+* Improved; In `CTRCrypto` in the `constructor` added the controll to see if `password` is a string and is not empty.
+* Updated; `config` with new parameters for test.
+* Updated; `secret.test` has now all the new test cases for errors management.
+* Updated; `data.test` with new test cases for errors management.
+* Updated; `crudOperations.test` as new test cases for insert all and find all.
+* Updated; `config` with new parameters for test.
+* Updated; `README.md` with `error list`, `insertMany` and `await` examples.
+* Updated; `LICENSE` is now valid for the year 2019.
+
 3.1.2 / 2018-12-30
 ===================
 

@@ -72,6 +72,31 @@ describe("Correct Url doing a find operation tests", function () {
         }
     })
 
+    it("Singleton Connection Strategy Repository must be closed without schemaName Parameter", async function () {
+        let ret;
+        let err;
+        try {
+            ret = await OnTheFlyRepositoryFactory.generateOnTheFlyRepository(config.OkConfigSingletonTestSchema1).find(config.FindQueryTestSchema1);
+            ret = await OnTheFlyRepositoryFactory.generateOnTheFlyRepository(config.ConfigSingletonNoSchemaName).closeSingletonConnection();
+        } catch (e) {
+            err = e;
+        } finally {
+            assert.equal(err, null || undefined)
+        }
+    })
+
+    it("Singleton Connection Strategy Repository must return an error if no schemaName Parameter", async function () {
+        let ret;
+        let err;
+        try {
+            ret = await OnTheFlyRepositoryFactory.generateOnTheFlyRepository(config.ConfigSingletonNoSchemaName).find(config.FindQueryTestSchema1);
+        } catch (e) {
+            err = e;
+        } finally {
+            assert.notEqual(err, null || undefined)
+        }
+    })
+
 })
 
 describe("Closing singleton connection tests", function () {

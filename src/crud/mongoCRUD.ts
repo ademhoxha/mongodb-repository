@@ -69,8 +69,19 @@ export class MongoCRUD {
 function addInMongo(data: any, callback: (err: any, ret: any) => void) {
     var mongo = data.mongooseProxy;
     var schema = mongo.initializeSchema();
+    if (data instanceof Array){
+        var insList: any = [];
+        data.forEach(e => {
+            insList.push(e.query)
+        })
+        return schema.collection.insertMany(insList, (err: any, item: any) => { // insert many
+            if (err)
+                return callback(err, undefined);
+            return callback(undefined, item);
+        });
+    }
     var element = new schema(data.query);
-    element.save((err: any, item: any) => {
+    return element.save((err: any, item: any) => { // insert one
         if (err)
             return callback(err, undefined);
         return callback(undefined, item);
@@ -80,7 +91,7 @@ function addInMongo(data: any, callback: (err: any, ret: any) => void) {
 function searchInMongo(data: any, callback: (err: any, ret: any) => void) {
     var mongo = data.mongooseProxy;
     var schema = mongo.initializeSchema();
-    schema.find(data.query, (err: any, item: any) => {
+    return schema.find(data.query, (err: any, item: any) => {
         if (err)
             return callback(err, undefined);
         return callback(undefined, item);
@@ -90,7 +101,7 @@ function searchInMongo(data: any, callback: (err: any, ret: any) => void) {
 function removeInMongo(data: any, callback: (err: any, ret: any) => void) {
     var mongo = data.mongooseProxy;
     var schema = mongo.initializeSchema();
-    schema.deleteMany(data.query, (err: any, item: any) => {
+    return schema.deleteMany(data.query, (err: any, item: any) => {
         if (err)
             return callback(err, undefined);
         return callback(undefined, item);
@@ -100,7 +111,7 @@ function removeInMongo(data: any, callback: (err: any, ret: any) => void) {
 function updateInMongo(data: any, callback: (err: any, ret: any) => void) {
     var mongo = data.mongooseProxy;
     var schema = mongo.initializeSchema();
-    schema.updateMany(data.query, data.update, (err: any, item: any) => {
+    return schema.updateMany(data.query, data.update, (err: any, item: any) => {
         if (err)
             return callback(err, undefined);
         return callback(undefined, item);

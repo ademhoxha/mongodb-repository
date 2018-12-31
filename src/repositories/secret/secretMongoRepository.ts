@@ -1,6 +1,8 @@
 import { BaseMongoRepository } from "../base/baseMongoRepository";
 import { CryptoFactory } from "../../crypto/cryptoFactory";
 import { BaseCryptoApi } from "../../crypto/baseCryptoApi";
+import { RepositoryUtils } from "../../utils/repositoryUtils";
+import { ErrorFactory } from "../../errors/errors";
 
 export class SecretMongoRepository extends BaseMongoRepository {
 
@@ -18,11 +20,22 @@ export class SecretMongoRepository extends BaseMongoRepository {
         return this;
     }
 
-    closeSingletonConnection(callback:  (err: any,) => void) {
+    closeSingletonConnection(callback: (err: any, ) => void) {
         return super.closeSingletonConnection(callback);
     }
 
     insert(data: any, callback: Function) {
+        if (!RepositoryUtils.areValidateCryptoParameters(this.parameters))
+            return callback(ErrorFactory.cryptoParameterNotValid(), undefined);
+
+        let cp = super.checkRepositoryParameters(true);
+        if (cp)
+            return callback(cp, undefined);
+
+        cp = super.checkQueryParameters(data, false, true);
+        if (cp)
+            return callback(cp, undefined);
+
         var newData: any = secretDataEncrypt(data, this.parameters, this.crypto);
         super.insert(newData, (err: any, ret: any) => {
             if (err)
@@ -33,6 +46,17 @@ export class SecretMongoRepository extends BaseMongoRepository {
     }
 
     find(data: any, callback: Function) {
+        if(!RepositoryUtils.areValidateCryptoParameters(this.parameters))
+            return callback(ErrorFactory.cryptoParameterNotValid(), undefined);
+
+        let cp = super.checkRepositoryParameters(true);
+        if (cp)
+            return callback(cp, undefined);
+
+        cp = super.checkQueryParameters(data, false, false);
+        if (cp)
+            return callback(cp, undefined);
+
         var newData = secretDataEncrypt(data, this.parameters, this.crypto);
         super.find(newData, (err: any, ret: any) => {
             if (err)
@@ -43,6 +67,17 @@ export class SecretMongoRepository extends BaseMongoRepository {
     }
 
     remove(data: any, callback: Function) {
+        if(!RepositoryUtils.areValidateCryptoParameters(this.parameters))
+            return callback(ErrorFactory.cryptoParameterNotValid(), undefined);
+
+        let cp = super.checkRepositoryParameters(true);
+        if (cp)
+            return callback(cp, undefined);
+
+        cp = super.checkQueryParameters(data, false, false);
+        if (cp)
+            return callback(cp, undefined);
+
         var newData: any = secretDataEncrypt(data, this.parameters, this.crypto);
         super.remove(newData, (err: any, ret: any) => {
             if (err)
@@ -53,6 +88,17 @@ export class SecretMongoRepository extends BaseMongoRepository {
     }
 
     update(data: any, callback: Function) {
+        if(!RepositoryUtils.areValidateCryptoParameters(this.parameters))
+            return callback(ErrorFactory.cryptoParameterNotValid(), undefined);
+
+        let cp = super.checkRepositoryParameters(true);
+        if (cp)
+            return callback(cp, undefined);
+
+        cp = super.checkQueryParameters(data, true, false);
+        if (cp)
+            return callback(cp, undefined);
+
         var newData: any = secretDataEncrypt(data, this.parameters, this.crypto);
         super.update(newData, (err: any, ret: any) => {
             if (err)

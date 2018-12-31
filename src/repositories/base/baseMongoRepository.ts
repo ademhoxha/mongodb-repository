@@ -2,17 +2,20 @@ import { MongoCrudOperations } from "../../crud/mongoCrudOperations";
 import { ErrorFactory } from "../../errors/errors";
 import { MongooseProxyFactory } from "../../proxy/mongooseProxyFactory";
 import { Model } from "../../model/model";
+import { RepositoryUtils } from "../../utils/repositoryUtils";
 
 export class BaseMongoRepository {
 
     private mongo: any;
-    private mongoCrud : MongoCrudOperations = MongoCrudOperations.prototype; // can't be null
+    private mongoCrud: MongoCrudOperations = MongoCrudOperations.prototype; // can't be null
     private dbName: string;
     private schemaName: string;
     private singleton: boolean;
     private isInitialized: boolean;
 
     constructor(data: any) {
+        if (!data)
+            data = {};
         this.mongo = null;
         //this.mongoCrud = null;
         this.dbName = data.dbName;
@@ -23,12 +26,44 @@ export class BaseMongoRepository {
         this.isInitialized = false;
     }
 
-    loadModel(data: any) : BaseMongoRepository{
+    checkQueryParameters(data: any, update: boolean, insert: boolean): any {
+        if (insert && data && data instanceof Array) { // insert many
+            if (!RepositoryUtils.isValidInsertManyObject(data))
+                return ErrorFactory.invalidCrudInsertManyParameter();
+        }
+        else {
+            if (!RepositoryUtils.isValidQueryUpdateObject(data))
+                return ErrorFactory.invalidCrudParameter();
+            if (!RepositoryUtils.isValidQueryUpdateObject(data.query))
+                return ErrorFactory.invalidCrudQueryParameter();
+            if (update && !RepositoryUtils.isValidQueryUpdateObject(data.update))
+                return ErrorFactory.invalidCrudUpdateParameter();
+        }
+        return undefined;
+    }
+
+    checkRepositoryParameters(checkIfSchemaLoaded: boolean): any {
+        if (!RepositoryUtils.isValidRepositoryConfigString(this.dbName))
+            return ErrorFactory.invalidUrl();
+        if (checkIfSchemaLoaded && !RepositoryUtils.isValidRepositoryConfigString(this.schemaName))
+            return ErrorFactory.invalidSchema();
+        if (checkIfSchemaLoaded && !Model.getSchemaJson(this.schemaName))
+            return ErrorFactory.schemaNotLoaded();
+        if (!RepositoryUtils.isValidSingletonConfigParameter(this.singleton))
+            return ErrorFactory.invalidSingletonConfigParameter();
+        return undefined;
+    }
+
+    loadModel(data: any): BaseMongoRepository {
         Model.setModel(data);
         return this;
     }
 
     closeSingletonConnection(callback: (err: any) => void) {
+        let cp = this.checkRepositoryParameters(false);
+        if (cp)
+            return callback(cp);
+
         if (!this.singleton)
             return callback(ErrorFactory.notSingletonIstance())
 
@@ -43,17 +78,12 @@ export class BaseMongoRepository {
                 return callback(ErrorFactory.notSingletonConnectionOpened());
         }
 
-        return this.mongo.openConnection((err: any) => {
+        this.mongoCrud = new MongoCrudOperations(data, this.mongo);
+        return this.mongoCrud.closeSingletonConnection((err: any) => {
             if (err)
                 return callback(err);
-            this.mongoCrud = new MongoCrudOperations(data, this.mongo);
-
-            this.mongoCrud.closeSingletonConnection((err: any) => {
-                if (err)
-                    return callback(err);
-                this.mongo.connectionClosed();
-                return callback(undefined)
-            });
+            this.mongo.connectionClosed();
+            return callback(undefined)
         });
     }
 
@@ -74,6 +104,14 @@ export class BaseMongoRepository {
     }
 
     insert(data: any, callback: (err: any, ret: any) => void) {
+        let cp = this.checkRepositoryParameters(true);
+        if (cp)
+            return callback(cp, undefined);
+
+        cp = this.checkQueryParameters(data, false, true);
+        if (cp)
+            return callback(cp, undefined);
+
         if (!this.singleton || !this.isInitialized)
             return this.initialize((err: any) => {
                 if (err)
@@ -85,6 +123,13 @@ export class BaseMongoRepository {
     }
 
     find(data: any, callback: (err: any, ret: any) => void) {
+        let cp = this.checkRepositoryParameters(true);
+        if (cp)
+            return callback(cp, undefined);
+        cp = this.checkQueryParameters(data, false, false);
+        if (cp)
+            return callback(cp, undefined);
+
         if (!this.singleton || !this.isInitialized)
             return this.initialize((err: any) => {
                 if (err)
@@ -96,6 +141,13 @@ export class BaseMongoRepository {
     }
 
     remove(data: any, callback: (err: any, ret: any) => void) {
+        let cp = this.checkRepositoryParameters(true);
+        if (cp)
+            return callback(cp, undefined);
+        cp = this.checkQueryParameters(data, false, false);
+        if (cp)
+            return callback(cp, undefined);
+
         if (!this.singleton || !this.isInitialized)
             return this.initialize((err: any) => {
                 if (err)
@@ -107,6 +159,13 @@ export class BaseMongoRepository {
     }
 
     update(data: any, callback: (err: any, ret: any) => void) {
+        let cp = this.checkRepositoryParameters(true);
+        if (cp)
+            return callback(cp, undefined);
+        cp = this.checkQueryParameters(data, true, false);
+        if (cp)
+            return callback(cp, undefined);
+
         if (!this.singleton || !this.isInitialized)
             return this.initialize((err: any) => {
                 if (err)

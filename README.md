@@ -37,6 +37,48 @@ const OnTheFlyRepositoryFactory = require('mongodb-repository-wmf').OnTheFlyRepo
 Pull requests are always welcome! Please base pull requests against the master branch and be sure to pass all test cases and to update the `History.md` and the `README.md` if needed. To run the test cases please execute `npm run test`.
 ## Take a Look
 Let see how to perform a single [insert](#Insert) operation using an `on the fly` created repository:
+
+1) If your [node.js](http://nodejs.org/) version supports [Async Functions](#Repository-Operations-With-Await).
+```javascript
+const OnTheFlyRepositoryFactory = require('mongodb-repository-wmf').OnTheFlyRepositoryFactory;
+
+var asyncFunc = async function() {  // define an async function
+    try {
+        let ret = await OnTheFlyRepositoryFactory.generateOnTheFlyRepository({ // configure your on the fly repository [1]
+                url: 'mongodb://localhost/test', // use your connection string
+                schemaName: 'Person',
+                singleton: false // set to true if want to use a singleton connection strategy [2]
+            }).loadModel({ // model must loaded only for the first on the fly repository (mongoose requires it) [3]
+                Person: {
+                    firstName: String,
+                    secondName: String,
+                    otherInfo: {
+                        age: Number
+                    }
+                }
+            }).insert({ // a repository is created now on the fly and a new connection is opened [4]
+                query: { // use all the mongoose power writing your query [5]
+                    firstName: "Adam",
+                    secondName: "Fenix",
+                    otherInfo: {
+                        age: 55
+                    }
+                }
+                
+        console.log("**** insert is ok ****");
+        console.log(ret);
+    }
+    catch (err){
+        console.log("**** error ****");
+        console.log(err);
+    }
+}
+
+asyncFunc(); // call the async function
+```
+
+2) If your [node.js](http://nodejs.org/) version does not support [Async Functions](#Repository-Operations-With-Await).
+
 ```javascript
 const OnTheFlyRepositoryFactory = require('mongodb-repository-wmf').OnTheFlyRepositoryFactory;
 
@@ -79,7 +121,7 @@ A [mongoose](https://www.npmjs.com/package/mongoose) query expression [(doc)](ht
 
 And the operation result `[6]` is a [JavaScript promise](https://www.promisejs.org/).
 
-The `ret` `[6]` and the `err` `[7]` objects are the [mongoose](https://www.npmjs.com/package/mongoose) `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html).
+The `ret` `[6]` and the `err` `[7]` objects are the [mongoose](https://www.npmjs.com/package/mongoose) `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html). But the `err` object can be a `mongodb-repository-wmf` error too. For the all `mongodb-repository-wmf` defined `error type list` please refer to [Errors](#Errors).
 
 In the previuos example the prototype connection strategy was used `[2]`, so the on the fly created repository made the connection for you once the operation was invoked `[4]` and close the connection when the operation ended `[6]`. All it is done behind the scenes by `mongodb-repository-wmf`.
 
@@ -135,7 +177,7 @@ Below is showed how to close a singleton connection:
 ```javascript
 MongoRepository.generateOnTheFlyRepository({ 
     url: 'mongodb://localhost/test',  // use your connection string
-    schemaName: 'Person',
+    // shema name is not needed for to close the singleton connection
     singleton: true, // singleton connection strategy
 }).closeSingletonConnection().then(ret => {
     console.log("connection successfully closed");
@@ -143,7 +185,7 @@ MongoRepository.generateOnTheFlyRepository({
      console.log(e)
 })
 ```
-The singleton connection is associated to the `url` and not to the `schema` or to a specific on the fly repository. So, all on the fly repositories associated to the same `url` and with a `singleton connection strategy` will share the same connection.
+The singleton connection is associated to the `url` and not to the `schema` or to a specific on the fly repository. So, all on the fly repositories associated to the same `url` and with a `singleton connection strategy` will share the same connection. No need to pass the `schema` into the configuration of the repository.
 ### Model Loading
 Before executing any CRUD operation for a specific schema its model must be loaded if it was not loaded before, that is because `mongodb-repository-wmf` is based on [mongoose](https://www.npmjs.com/package/mongoose) [(doc)](https://mongoosejs.com/docs/models.html).
 
@@ -235,6 +277,7 @@ So, each model must be loaded once and can be overwritten by loading it again.
 ### CRUD Operations
 Careless the connection strategy of the Repository you can perform:
 1) [Insert](#Insert)
+2) [Insert All](#Insert-All)
 2) [Find](#Find-And-Find-All)
 3) [Remove](#Remove)
 4) [Update](#Update)
@@ -273,8 +316,57 @@ This operation will insert a new Person with `firstName: "Adam"` and `secondName
 
 The `query` object can use all the [mongoose](https://www.npmjs.com/package/mongoose) power for more complicated structures.
 
-The `ret` and the `err` objects are the [mongoose](https://www.npmjs.com/package/mongoose) `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html). 
+The `ret` and the `err` objects are the [mongoose](https://www.npmjs.com/package/mongoose) `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html). But the `err` object can be a `mongodb-repository-wmf` error too. For the all `mongodb-repository-wmf` defined `error type list` please refer to [Errors](#Errors).
+
 In case of successful operation `ret` will contain the inserted element.
+##### Insert All
+*Since version `3.1.3` of `mongodb-repository-wmf`.*
+
+To perform an insert all operation you must invoke the insert method passing an array of JSON Object with the `query` field that specify the element to insert.
+```javascript
+const OnTheFlyRepositoryFactory = require('mongodb-repository-wmf').OnTheFlyRepositoryFactory;
+
+const personConfig = {
+    url: 'mongodb://localhost/test', // user your connection string
+    schemaName: 'Person', // schema name
+    singleton: false // prototype connection strategy
+}
+
+OnTheFlyRepositoryFactory.loadModel({
+    Person: {
+        firstName: String,
+        secondName: String,
+    }
+})
+
+OnTheFlyRepositoryFactory.generateOnTheFlyRepository(personConfig).insert(
+    [
+        {   query: {
+            firstName: "Adam",
+            secondName: "Fenix"
+        },
+        {   query: {
+            firstName: "Domenic",
+            secondName: "Santiago"
+        }
+    ]
+}).then(ret => {
+    console.log(ret)
+}).catch((err) => {
+    console.log(err)
+})
+```
+This operation will insert two people: the first one with `firstName: "Adam"` and `secondName: "Fenix"` and the second one with `firstName: "Domenic"` and `secondName: "Santiago"`. 
+
+In the insert with a single element and in the insert with many elements `different` [mongoose](https://www.npmjs.com/package/mongoose) operation will be executed. For the insert all operation the [inserMany](https://mongoosejs.com/docs/api.html#model_Model.insertMany) [mongoose](https://www.npmjs.com/package/mongoose) function is used. 
+
+**NOTE: if you are trying to save at `the same time` (insert all operation) duplicate elements to the db where the `only difference will be the _id` that will be associated to each of them, the operation will fail with an index duplication error!!!  [(see)](https://github.com/Automattic/mongoose/issues/4978)**
+
+The `query` object can use all the [mongoose](https://www.npmjs.com/package/mongoose) power for more complicated structures.
+
+The `ret` and the `err` objects are the [mongoose](https://www.npmjs.com/package/mongoose) `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html). But the `err` object can be a `mongodb-repository-wmf` error too. For the all `mongodb-repository-wmf` defined `error type list` please refer to [Errors](#Errors).
+
+In case of successful operation `ret` will contain the inserted elements.
 ##### Find And Find All
 To perform a find operation you must invoke the find method passing a JSON Object with the `query` field that specify the element to find.
 ```javascript
@@ -307,7 +399,8 @@ This operation will found all the element with `firstName: "Adam"`.
 
 The `query` object can use all the [mongoose](https://www.npmjs.com/package/mongoose) power for more complicated structures.
 
-The `ret` and the `err` objects are the [mongoose](https://www.npmjs.com/package/mongoose) `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html).
+The `ret` and the `err` objects are the [mongoose](https://www.npmjs.com/package/mongoose) `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html). But the `err` object can be a `mongodb-repository-wmf` error too. For the all `mongodb-repository-wmf` defined `error type list` please refer to [Errors](#Errors).
+
 In case of successful operation `ret` will contain the founded elements.
 
 
@@ -340,7 +433,7 @@ Now all the records will be founded.
 ##### Remove
 To perform a remove operation you must invoke the remove method passing a JSON Object with the `query` field that specify the element to remove.
 
-Note: the remove operation is a Remove All, so each matched element will be removed.
+**Note**: *Since version `3.1.0` of `mongodb-repository-wmf`.* the remove operation is a Remove All, so each matched element will be removed. Before was an remove one operation.
 ```javascript
 const OnTheFlyRepositoryFactory = require('mongodb-repository-wmf').OnTheFlyRepositoryFactory;
 
@@ -371,12 +464,13 @@ This operation will remove all `People` with `firstName: "Adam"`.
 
 The `query` object can use all the [mongoose](https://www.npmjs.com/package/mongoose) power for more complicated structures.
 
-The `ret` and the `err` objects are the [mongoose](https://www.npmjs.com/package/mongoose) `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html).
+The `ret` and the `err` objects are the [mongoose](https://www.npmjs.com/package/mongoose) `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html). But the `err` object can be a `mongodb-repository-wmf` error too. For the all `mongodb-repository-wmf` defined `error type list` please refer to [Errors](#Errors).
+
 In case of successful operation `ret` will be `{ n: #, ok: 1 }` where `#` is the number of removed element.
 ##### Update
 To perform an update operation you must invoke the update method passing a JSON Object with the `query` field that specify the element to update and an `update` object with the fields that must be apdated.
 
-Note: the update operation is an Update All, so each matched element will be updated.
+Note: *Since version `3.1.0` of `mongodb-repository-wmf`.* the update operation is an Update All, so each matched element will be updated. Before was an update one operation.
 ```javascript
 const OnTheFlyRepositoryFactory = require('mongodb-repository-wmf').OnTheFlyRepositoryFactory;
 
@@ -410,7 +504,8 @@ This operation will update all `People` with `firstName: "Adam"` to `firstName: 
 
 The `query` and the `update` objects can use all the [mongoose](https://www.npmjs.com/package/mongoose) power for more complicated structures.
 
-The `ret` and the `err` objects are the [mongoose](https://www.npmjs.com/package/mongoose) `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html).
+The `ret` and the `err` objects are the [mongoose](https://www.npmjs.com/package/mongoose) `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html). But the `err` object can be a `mongodb-repository-wmf` error too. For the all `mongodb-repository-wmf` defined `error type list` please refer to [Errors](#Errors).
+
 In case of successful operation `ret` will be `{ n: #1, nModified: #2, ok: 1 }` where `#1` is the number of matched element and `#2` is the number of element that required the fields update.
 ##### Chaining Repository Operations
 Thanks to the [JavaScript promises API](https://www.promisejs.org/) and the `mongodb-repository-wmf` capability to generate on the fly repository you can scale vertically without any code interruption.
@@ -459,6 +554,55 @@ OnTheFlyRepositoryFactory.generateOnTheFlyRepository(personConfig).update({ // f
 After the [(Model Loading)](#Model-Loading) `[1]` a new on the fly repository is generated `[2]` and an [update](#Update) operation is executed. In the returned promise of the first operation `[3]` a new on the fly repository is created and a [find](#Find-And-Find-All) operation is returned `[4]` that it is itself a promise. 
 
 In this way is possible to chain an unlimited number of [CRUD Operations](#CRUD-Operations).
+##### Repository Operations With Await
+If your [node.js](http://nodejs.org/) version supports [asyc function](https://node.green/#ES2017-features-async-functions) you can use the [await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await) instruction to have a more readable code:
+
+```javascript
+const OnTheFlyRepositoryFactory = require('mongodb-repository-wmf').OnTheFlyRepositoryFactory;
+
+const personConfig = { 
+    url: 'mongodb://localhost/test', // user your connection string
+    schemaName: 'Person', // schema name
+    singleton: false // prototype connection strategy
+}
+
+OnTheFlyRepositoryFactory.loadModel({ // [1]
+    Person: {
+        firstName: String,
+        secondName: String,
+    }
+});
+
+
+var asyncFunc = async function() {  // define an async function
+    try {
+        let ret = await OnTheFlyRepositoryFactory.generateOnTheFlyRepository(personConfig).insert({ // first insert
+            query: {
+                firstName: "Marcus",
+                secondName: "Fenix"
+            }
+        });
+        console.log("**** first insert is ok ****");
+        console.log(ret);
+        
+        ret = await OnTheFlyRepositoryFactory.generateOnTheFlyRepository(personConfig).insert({ // second insert
+            query: {
+                firstName: "Marcus",
+                secondName: "Fenix"
+            }
+        });
+        
+        console.log("**** second insert is ok ****");
+        console.log(ret); 
+    }
+    catch (err){
+        console.log("**** error ****");
+        console.log(err);
+    }
+}
+
+asyncFunc(); // call the async function
+```
 ### Encryption
 An On The Fly Repository able to encrypt and decrypt data from and to DB is also provided by `mongodb-repository-wmf`. 
 ```javascript
@@ -502,7 +646,7 @@ In this way the `firstSecretInfo` and `secondSecretInfo` fields will be crypted 
 
 The `query` object can use all the [mongoose](https://www.npmjs.com/package/mongoose) power for more complicated structures.
 
-The `ret` and the `err` objects are the [mongoose](https://www.npmjs.com/package/mongoose) `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html).
+The `ret` and the `err` objects are the [mongoose](https://www.npmjs.com/package/mongoose) `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html). But the `err` object can be a `mongodb-repository-wmf` error too. For the all `mongodb-repository-wmf` defined `error type list` please refer to [Errors](#Errors).
 
 
 To read the data in an encrypted way you must configure the On The Fly Repository as well as done before for the insert.
@@ -542,7 +686,7 @@ Now, you will have `firstSecretInfo` and `secondSecretInfo` fields decrypted.
 
 The `query` object can use all the [mongoose](https://www.npmjs.com/package/mongoose) power for more complicated structures.
 
-The `ret` and the `err` objects are the [mongoose](https://www.npmjs.com/package/mongoose) `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html).
+The `ret` and the `err` objects are the [mongoose](https://www.npmjs.com/package/mongoose) `ret` and `err` objects [(doc)](https://mongoosejs.com/docs/queries.html). But the `err` object can be a `mongodb-repository-wmf` error too. For the all `mongodb-repository-wmf` defined `error type list` please refer to [Errors](#Errors).
 ## Performances and Best Practies
 The repository and the connection associated to it will be created on the fly just when a [CRUD operation](#CRUD-Operations) is invoked. After the operation execution the connection will be closed if a [prototype connection strategy](#Prototype-Connection-Strategy) was choosed, otherwise the connection will stay open untill the [close singleton connection method call](#Singleton-Connection-Strategy).
 
@@ -587,7 +731,7 @@ Moreover is convenient to load the model before the first on the fly Repository 
 1) Create a constant for the [repository configuration](#Configure-the-On-The-Fly-Repository) (one for schema).
 2) [Load the model](#Model-Loading) before the first call (you can set the model directly in the *OnTheFlyRepositoryFactory*).
 3) Use whenever you want a *new* on the fly Repository to perform a [CRUD operation](#CRUD-Operations), do not store it in a variable.
-4) Always take advantage of [JavaScript promises API](https://www.promisejs.org/) to scale vertically by [chaining repository operations](#Chaining-Repository-Operations).
+4) Always take advantage of [JavaScript promises API](https://www.promisejs.org/) to scale vertically by [chaining repository operations](#Chaining-Repository-Operations). **Better** to use [Async Functions](#Repository-Operations-With-Await) if your [node.js](http://nodejs.org/) version supports them [(see)](#Repository-Operations-With-Await).
 ```javascript
 const OnTheFlyRepositoryFactory = require('mongodb-repository-wmf').OnTheFlyRepositoryFactory;
 
@@ -632,13 +776,34 @@ OnTheFlyRepositoryFactory.generateOnTheFlyRepository(personConfig).update({
 })
 
 ```
-The choice of the `connection strategy` is on you, `moongose` suggests to use a [Singleton Connection Strategy](#Singleton-Connection-Strategy) for a NodeJs application. Bust sometimes you may use a [Prototype Connection Strategy](#Prototype-Connection-Strategy).
+The choice of the `connection strategy` is on you, [mongoose](https://www.npmjs.com/package/mongoose) suggests to use a [Singleton Connection Strategy](#Singleton-Connection-Strategy) for a NodeJs application. Bust sometimes you may use a [Prototype Connection Strategy](#Prototype-Connection-Strategy).
+## Errors
+*Since version `3.1.3` of `mongodb-repository-wmf`.*
+
+Below the `error type list` returned by `mongodb-repository-wmf`:
+1) `ConnectionError`: refering to a not valid url parameter in the [repository configuration](#Configure-the-On-The-Fly-Repository); an accurate description will be returned with the error.
+2) `SchemaError`: refering to some issues with the schema, maybe the schema is [not loadel](#Model-Loading) or the `schemaName` is invalid; an accurate description will be returned with the error.
+3) `SingletonError`: refering to a not valid operation on [Singleton Connection Strategy](#Singleton-Connection-Strategy) like closining a not opened singleton connection; an accurate description will be returned with the error.
+4) `ObjectError`: refering to all invalid objects and fields passed in the [repository configuration](#Configure-the-On-The-Fly-Repository) and in the [CRUD operations](#CRUD-Operations); an accurate description will be returned with the error.
+
+Will be returned a [mongoose](https://www.npmjs.com/package/mongoose) error if something will be not ok with some [mongoose](https://www.npmjs.com/package/mongoose) operations.
 ## Examples ###
 Each example follows the `mongodb-repository-wmf`  [Performances and Best Practies](#Performances-and-Best-Practies) guidelines.
 1) Create a constant for the [repository configuration](#Configure-the-On-The-Fly-Repository) (one for schema).
 2) [Load the model](#Model-Loading) before the first call (you can set the model directly in the *OnTheFlyRepositoryFactory*).
 3) Use whenever you want a *new* on the fly Repository to perform a [CRUD operation](#CRUD-Operations), do not store it in a variable.
-4) Always take advantage of [JavaScript promises API](https://www.promisejs.org/) to scale vertically by [chaining repository operations](#Chaining-Repository-Operations).
+4) Always take advantage of [JavaScript promises API](https://www.promisejs.org/) to scale vertically by [chaining repository operations](#Chaining-Repository-Operations). **Better** to use [Async Functions](#Repository-Operations-With-Await) if your [node.js](http://nodejs.org/) version supports them [(see)](#Repository-Operations-With-Await).
+
+For more general usage these example are maded using the [JavaScript promises API](https://www.promisejs.org/) and [chaining repository operations](#Chaining-Repository-Operations).
+
+For all the [CRUD operations](#CRUD-Operations) please refer to:
+1) [Insert](#Insert)
+2) [Insert All](#Insert-All)
+2) [Find](#Find-And-Find-All)
+3) [Remove](#Remove)
+4) [Update](#Update)
+
+For the all `mongodb-repository-wmf` defined `error type list` please refer to [Errors](#Errors).
 ##### Multiple Operations on the same schema using the same connection strategy
 See how to perform an update and a find [CRUD operations](#CRUD-Operations) with an `on the fly created repository` using a [singleton connection strategy](#Singleton-Connection-Strategy) and closing the singleton connection at the end.
 ```javascript

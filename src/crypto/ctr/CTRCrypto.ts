@@ -7,8 +7,9 @@ export class CTRCrypto implements BaseCryptoApi {
     private cryptoData : any = {};
     constructor(data : any) {
         this.cryptoData.algorithm = 'aes-256-ctr';
-        if (data.password)
-            this.cryptoData.password = data.password;
+        let psw : any = data.password;
+        if (psw && typeof psw == 'string' && psw.trim() != "")
+            this.cryptoData.password = psw;
         else
             this.cryptoData.password = '3zTvzr3p67VC61jmV54rIYu1545x4TlY';  // Base Config
     }

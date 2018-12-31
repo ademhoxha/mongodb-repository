@@ -9,6 +9,10 @@ const testSchema1 = 'TestSchema1';
 const testSchema2 = 'TestSchema2';
 const secretSchema = 'SecretSchema';
 
+const configSingletonNoSchemaName = {
+    url: url,
+    singleton: true
+}
 const configSingletonTestSchema2 = {
     url: url,
     schemaName: testSchema2,
@@ -82,6 +86,21 @@ const insertQueryTestSchema1 = {
         testInfo1: "Element",
     }
 }
+const insertQueryTestSchema1Many1= {
+    query: {
+        testInfo1: "ElementX",
+    }
+}
+const insertQueryTestSchema1Many2= {
+    query: {
+        testInfo1: "ElementXX",
+    }
+}
+const insertQueryTestSchema1Many3= {
+    query: {
+        testInfo1: "ElementXXX",
+    }
+}
 const updateQueryTestSchema1 = {
     query: {
         testInfo1: "Element",
@@ -97,6 +116,7 @@ const removeQueryTestSchema1 = {
 }
 
 module.exports = {
+    ConfigSingletonNoSchemaName: configSingletonNoSchemaName,
     OkConfigSingletonTestSchema1: okConfigSingletonTestSchema1,
     OkConfigPrototypeTestSchema1: okConfigPrototypeTestSchema1,
     FailConfigSingletonTestSchema1: failConfigSingletonTestSchema1,
@@ -104,6 +124,9 @@ module.exports = {
     TestSchema1ModelLoading: testSchema1ModelLoading,
     FindQueryTestSchema1: findQueryTestSchema1,
     InsertQueryTestSchema1: insertQueryTestSchema1,
+    InsertQueryTestSchema1Many1: insertQueryTestSchema1Many1,
+    InsertQueryTestSchema1Many2: insertQueryTestSchema1Many2,
+    InsertQueryTestSchema1Many3: insertQueryTestSchema1Many3,
     UpdateQueryTestSchema1: updateQueryTestSchema1,
     RemoveQueryTestSchema1: removeQueryTestSchema1,
     ConfigSecretSchema: configSecretSchema,
