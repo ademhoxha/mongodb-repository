@@ -59,6 +59,27 @@ export class BaseMongoRepository {
         return this;
     }
 
+
+    openSingletonConnection(callback: (err: any) => void) {
+        let cp = this.checkRepositoryParameters(false);
+        if (cp)
+            return callback(cp);
+
+        if (!this.singleton)
+            return callback(ErrorFactory.notSingletonIstance())
+
+        var data: any = {};
+        data.dbName = this.dbName;
+        let MongooseProxy = MongooseProxyFactory.generateProxy(this.singleton);
+        this.mongo = new MongooseProxy(data);
+        if (!this.mongo.getConnection() || this.mongo.getConnection() == null){ // connection not opened
+            return this.mongo.openSingletonConnection((err: any) => {
+                return callback(err);
+            });
+        }
+        return callback(undefined);
+    }
+
     closeSingletonConnection(callback: (err: any) => void) {
         let cp = this.checkRepositoryParameters(false);
         if (cp)

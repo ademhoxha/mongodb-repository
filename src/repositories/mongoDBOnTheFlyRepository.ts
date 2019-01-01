@@ -1,11 +1,12 @@
 import { MongoPromiseRepositoryInterface } from './mongoPromiseRepositoryInterface';
 
-export class MongoDBOnTheFlyRepository {
+export class MongoDBOnTheFlyRepository implements MongoPromiseRepositoryInterface{
 
     constructor(repository: MongoPromiseRepositoryInterface) {
 
         this.loadModel = (data) => repository.loadModel(data);
         this.closeSingletonConnection = () => repository.closeSingletonConnection();
+        this.openSingletonConnection = () => repository.openSingletonConnection();
 
         this.insert = (data) => repository.insert(data);
         this.find = (data) => repository.find(data);
@@ -21,6 +22,15 @@ export class MongoDBOnTheFlyRepository {
      */
     loadModel(data: any): MongoDBOnTheFlyRepository {
         return this
+    }
+
+    /**
+     * @description: Open the singleton connection if it is not opened. 
+     * Rejected if it is not a singleton connection strategy repository.
+     * @Return {Promise}
+     */
+    openSingletonConnection(): Promise<any> {
+        return new Promise((x,y) => { y("not implemented")});
     }
 
     /**

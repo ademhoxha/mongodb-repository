@@ -20,6 +20,10 @@ export class SecretMongoRepository extends BaseMongoRepository {
         return this;
     }
 
+    openSingletonConnection(callback: (err: any, ) => void) {
+        return super.openSingletonConnection(callback);
+    }
+
     closeSingletonConnection(callback: (err: any, ) => void) {
         return super.closeSingletonConnection(callback);
     }
@@ -46,7 +50,7 @@ export class SecretMongoRepository extends BaseMongoRepository {
     }
 
     find(data: any, callback: Function) {
-        if(!RepositoryUtils.areValidateCryptoParameters(this.parameters))
+        if (!RepositoryUtils.areValidateCryptoParameters(this.parameters))
             return callback(ErrorFactory.cryptoParameterNotValid(), undefined);
 
         let cp = super.checkRepositoryParameters(true);
@@ -67,7 +71,7 @@ export class SecretMongoRepository extends BaseMongoRepository {
     }
 
     remove(data: any, callback: Function) {
-        if(!RepositoryUtils.areValidateCryptoParameters(this.parameters))
+        if (!RepositoryUtils.areValidateCryptoParameters(this.parameters))
             return callback(ErrorFactory.cryptoParameterNotValid(), undefined);
 
         let cp = super.checkRepositoryParameters(true);
@@ -88,7 +92,7 @@ export class SecretMongoRepository extends BaseMongoRepository {
     }
 
     update(data: any, callback: Function) {
-        if(!RepositoryUtils.areValidateCryptoParameters(this.parameters))
+        if (!RepositoryUtils.areValidateCryptoParameters(this.parameters))
             return callback(ErrorFactory.cryptoParameterNotValid(), undefined);
 
         let cp = super.checkRepositoryParameters(true);
@@ -112,20 +116,22 @@ export class SecretMongoRepository extends BaseMongoRepository {
 
 function secretDataEncrypt(startData: any, parameters: [], crypto: any) {
     var data = startData;
-    parameters.forEach(element => {
-        if (data.query && data.query[element]) {
-            data.query[element] = crypto.encrypt(data.query[element])
-        }
-        if (data.update && data.update[element]) {
-            data.update[element] = crypto.encrypt(data.update[element])
-        }
-    });
+    if (parameters) {
+        parameters.forEach(element => {
+            if (data.query && data.query[element]) {
+                data.query[element] = crypto.encrypt(data.query[element])
+            }
+            if (data.update && data.update[element]) {
+                data.update[element] = crypto.encrypt(data.update[element])
+            }
+        });
+    }
     return data;
 }
 
 function secretDataDecrypt(startData: any, parameters: [], crypto: any) {
     var returnData = startData;
-    if (returnData && returnData instanceof Array) {
+    if (returnData && returnData instanceof Array && parameters) {
         returnData.forEach(data => {
             parameters.forEach(element => {
                 if (data[element]) {
@@ -139,7 +145,7 @@ function secretDataDecrypt(startData: any, parameters: [], crypto: any) {
                 }
             });
         });
-    } else if (returnData) {
+    } else if (returnData && parameters) {
         parameters.forEach(element => {
             if (returnData[element]) {
                 returnData[element] = crypto.decrypt(returnData[element])

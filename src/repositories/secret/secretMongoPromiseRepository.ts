@@ -15,6 +15,17 @@ export class SecretMongoPromiseRepository implements MongoPromiseRepositoryInter
         return this;
     }
 
+    openSingletonConnection(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.mongoRep.openSingletonConnection((err: any) => {
+                if (err)
+                    reject(err);
+                else
+                    resolve("Connection Opened");
+            })
+        });
+    }
+
     closeSingletonConnection(): Promise<any> {
         return new Promise((resolve, reject) => {
             this.mongoRep.closeSingletonConnection((err: any) => {

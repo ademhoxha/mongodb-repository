@@ -177,7 +177,7 @@ Below is showed how to close a singleton connection:
 ```javascript
 MongoRepository.generateOnTheFlyRepository({ 
     url: 'mongodb://localhost/test',  // use your connection string
-    // shema name is not needed for to close the singleton connection
+    // schema name is not needed for to close the singleton connection
     singleton: true, // singleton connection strategy
 }).closeSingletonConnection().then(ret => {
     console.log("connection successfully closed");
@@ -185,7 +185,7 @@ MongoRepository.generateOnTheFlyRepository({
      console.log(e)
 })
 ```
-The singleton connection is associated to the `url` and not to the `schema` or to a specific on the fly repository. So, all on the fly repositories associated to the same `url` and with a `singleton connection strategy` will share the same connection. No need to pass the `schema` into the configuration of the repository.
+The singleton connection is associated to the `url` and not to the `schema` or to a specific on the fly repository. So, all on the fly repositories associated to the same `url` and with a `singleton connection strategy` will share the same connection. Since version `3.1.0` of `mongodb-repository-wmf` it is no need to pass the `schema` into the configuration of the repository when you wanto to close the singleton connection (for previous versions you have to pass a valid schema).
 ### Model Loading
 Before executing any CRUD operation for a specific schema its model must be loaded if it was not loaded before, that is because `mongodb-repository-wmf` is based on [mongoose](https://www.npmjs.com/package/mongoose) [(doc)](https://mongoosejs.com/docs/models.html).
 
@@ -794,7 +794,7 @@ Each example follows the `mongodb-repository-wmf`  [Performances and Best Practi
 3) Use whenever you want a *new* on the fly Repository to perform a [CRUD operation](#CRUD-Operations), do not store it in a variable.
 4) Always take advantage of [JavaScript promises API](https://www.promisejs.org/) to scale vertically by [chaining repository operations](#Chaining-Repository-Operations). **Better** to use [Async Functions](#Repository-Operations-With-Await) if your [node.js](http://nodejs.org/) version supports them [(see)](#Repository-Operations-With-Await).
 
-For more general usage these example are maded using the [JavaScript promises API](https://www.promisejs.org/) and [chaining repository operations](#Chaining-Repository-Operations).
+For more general usage these example are maded using the [JavaScript promises API](https://www.promisejs.org/) and [chaining repository operations](#Chaining-Repository-Operations) except for the first one.
 
 For all the [CRUD operations](#CRUD-Operations) please refer to:
 1) [Insert](#Insert)
@@ -804,6 +804,119 @@ For all the [CRUD operations](#CRUD-Operations) please refer to:
 4) [Update](#Update)
 
 For the all `mongodb-repository-wmf` defined `error type list` please refer to [Errors](#Errors).
+##### Multiple Operations on the same schema using the same connection strategy with Async Functions
+See how to perform an update and a find [CRUD operations](#CRUD-Operations) with an `on the fly created repository` using a [singleton connection strategy](#Singleton-Connection-Strategy) and closing the singleton connection at the end with [Async Functions](#Repository-Operations-With-Await). Be sure that your [node.js](http://nodejs.org/) version supports them [(see)](#Repository-Operations-With-Await).
+```javascript
+const OnTheFlyRepositoryFactory = require('mongodb-repository-wmf').OnTheFlyRepositoryFactory;
+
+const config = {
+    url: 'mongodb://localhost/test', // user your connection string
+    schemaName: 'Person', // schema name
+    singleton: true // singleton connection strategy
+}
+
+OnTheFlyRepositoryFactory.generateOnTheFlyRepository(config).loadModel({ 
+    Person: {
+        firstName: String,
+        secondName: String,
+    }
+})
+
+
+async function f(){ // define an async function
+    try {
+        let ret = await OnTheFlyRepositoryFactory.generateOnTheFlyRepository(config).update({
+            query: {
+                firstName: "Marcus",
+                secondName: "Fenix"
+            },
+            update: {
+                firstName: "Cole"
+            }
+        });
+        console.log("update ok")
+        console.log(ret)
+
+        ret = await OnTheFlyRepositoryFactory.generateOnTheFlyRepository(config).find({
+            query: {
+                firstName: "Cole"
+            }
+        });
+        console.log("find ok")
+        console.log(ret)
+        
+        ret = await OnTheFlyRepositoryFactory.generateOnTheFlyRepository(config).closeSingletonConnection();
+        console.log("connection closed")
+
+    } catch (e) {
+        console.log("error")
+        console.log(e)
+    } finally {
+        console.log("method ended")
+    }
+
+}
+
+f(); // call the async function
+```
+Obviously you can define a variable called repository and use it without generationg a new one every time. Ih this case should be the best approach because the same repository type is used sequentialy in the function, but in general if you are going to use the same repository in different part of the code it is more clean to generate a new one every time and not to store it in a variable.
+
+Below the new code:
+```javascript
+const OnTheFlyRepositoryFactory = require('mongodb-repository-wmf').OnTheFlyRepositoryFactory;
+
+const config = {
+    url: 'mongodb://localhost/test', // user your connection string
+    schemaName: 'Person', // schema name
+    singleton: true // singleton connection strategy
+}
+
+OnTheFlyRepositoryFactory.generateOnTheFlyRepository(config).loadModel({
+    Person: {
+        firstName: String,
+        secondName: String,
+    }
+})
+
+async function f(){ // define an async function
+    try {
+
+        let repository = OnTheFlyRepositoryFactory.generateOnTheFlyRepository(config); // store the generated repository in a variable
+
+        let ret = await repository.update({
+            query: {
+                firstName: "Marcus",
+                secondName: "Fenix"
+            },
+            update: {
+                firstName: "Cole"
+            }
+        });
+        console.log("update ok")
+        console.log(ret)
+
+        ret = await repository.find({
+            query: {
+                firstName: "Cole"
+            }
+        });
+        console.log("find ok")
+        console.log(ret)
+        
+        ret = await repository.closeSingletonConnection();
+        console.log("connection closed")
+
+    } catch (e) {
+        console.log("error")
+        console.log(e)
+    } finally {
+        console.log("method ended")
+    }
+
+}
+
+f(); // call the async function
+```
 ##### Multiple Operations on the same schema using the same connection strategy
 See how to perform an update and a find [CRUD operations](#CRUD-Operations) with an `on the fly created repository` using a [singleton connection strategy](#Singleton-Connection-Strategy) and closing the singleton connection at the end.
 ```javascript

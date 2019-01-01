@@ -51,6 +51,16 @@ export interface MongoPromiseRepositoryInterface {
      * @Return {OnTheFlyRepositoryFactory} -- return the factory
      */
     loadModel(data: any): MongoPromiseRepositoryInterface;
+
+    /**
+     * @description: Open the singleton connection if it is not opened. 
+     * 
+     * Alert: An Error will be launched if configured connection strategy is a prototype connection
+     *  
+     * @Return {Promise}
+     */
+    openSingletonConnection(): Promise<any>;
+
     /**
      * @description: Close the singleton connection if it is opened. 
      * 

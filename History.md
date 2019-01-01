@@ -1,3 +1,21 @@
+3.1.4 / 2019-01-02
+===================
+* Feature; openSingletonConnection is now possible, just pass the url and the singleton to true, no schema is needed.
+
+* Updated; `MongoPromiseRepositoryInterface` is now the the new method `openSingletonConnection`.
+* Improved; `MongoDBOnTheFlyRepository` implements now the interface `MongoPromiseRepositoryInterface`.
+* Updated; `MongoDBOnTheFlyRepository` implements the method `openSingletonConnection`.
+* Updated; `BaseMongoRepository` implements the method `openSingletonConnection`.
+* Updated; `BaseMongoPromiseRepository` implements the method `openSingletonConnection`.
+* Updated; `SecretMongoRepository` implements the method `openSingletonConnection`.
+* Updated; `SecretMongoPromiseRepository` implements the method `openSingletonConnection`.
+* Updated; `MongooseSingletonProxy` has now the method `openSingletonConnection` to open a singleton connection.
+* Fixed; `SecretMongoRepository` bug for undefined parameter forEach in methods `secretDataEncrypt` and `secretDataDecrypt`.
+* Updated; `config` with new parameters for test.
+* Updated; `advancedConnectionTest.test` with new test cases for open singleton connection.
+* Updated; `connection.test` with new test cases for open singleton connection.
+* Updated; `README.md` has `openSingletonConnection` reference.
+
 3.1.3 / 2019-01-01
 ===================
 

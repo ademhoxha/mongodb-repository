@@ -30,6 +30,15 @@ const okConfigSingletonTestSchema1 = {
     schemaName: testSchema1,
     singleton: true
 }
+const okConfigSingletonOnlyUrl = {
+    url: url,
+    singleton: true
+}
+const okConfigSingletonOnlyUrlSecret = {
+    url: url,
+    singleton: true,
+    secret : true
+}
 const okConfigPrototypeTestSchema1 = {
     url: url,
     schemaName: testSchema1,
@@ -135,5 +144,7 @@ module.exports = {
     InsertQuerySecretSchema: insertQuerySecretSchema,
     ConfigSingletonTestSchema2: configSingletonTestSchema2,
     TestSchema2ModelLoading: testSchema2ModelLoading,
-    FindQueryTestSchema2: findQueryTestSchema2
+    FindQueryTestSchema2: findQueryTestSchema2,
+    OkConfigSingletonOnlyUrl: okConfigSingletonOnlyUrl,
+    OkConfigSingletonOnlyUrlSecret: okConfigSingletonOnlyUrlSecret
 }

@@ -99,7 +99,45 @@ describe("Correct Url doing a find operation tests", function () {
 
 })
 
-describe("Closing singleton connection tests", function () {
+describe("Closing an Opening singleton connection tests", function () {
+
+    it("Must be possible to open a singleton connection without schema name and close it without schema name for not secret repository", async function () {
+        let ret;
+        let err;
+        try {
+            ret = await OnTheFlyRepositoryFactory.generateOnTheFlyRepository(config.OkConfigSingletonOnlyUrl).openSingletonConnection();
+            ret = await OnTheFlyRepositoryFactory.generateOnTheFlyRepository(config.OkConfigSingletonOnlyUrl).closeSingletonConnection();
+        } catch (e) {
+            err = e;
+        } finally {
+            assert.equal(err, null || undefined)
+        }
+    })
+
+    it("Must be possible to open a singleton connection without schema name and close it without schema name for secret repository", async function () {
+        let ret;
+        let err;
+        try {
+            ret = await OnTheFlyRepositoryFactory.generateOnTheFlyRepository(config.OkConfigSingletonOnlyUrlSecret).openSingletonConnection();
+            ret = await OnTheFlyRepositoryFactory.generateOnTheFlyRepository(config.OkConfigSingletonOnlyUrlSecret).closeSingletonConnection();
+        } catch (e) {
+            err = e;
+        } finally {
+            assert.equal(err, null || undefined)
+        }
+    })
+
+    it("If a openSingletonConnection method is invoked for a prototype repository must return an error", async function () {
+        let ret;
+        let err;
+        try {
+            ret = await OnTheFlyRepositoryFactory.generateOnTheFlyRepository(config.OkConfigPrototypeTestSchema1).openSingletonConnection();
+        } catch (e) {
+            err = e;
+        } finally {
+            assert.notEqual(err, null || undefined)
+        }
+    })
 
     it("If a closingSingletonConnection method is invoked for a prototype repository must return an error", async function () {
         let ret;

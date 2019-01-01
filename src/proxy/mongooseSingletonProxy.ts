@@ -30,6 +30,15 @@ export class MongooseSingletonProxy implements MongooseProxyInterface {
         return callback(undefined);
     }
 
+    openSingletonConnection(callback : any){
+        if (MongooseSingletonProxy.mongooseInstances[this.data.dbName] == null || MongooseSingletonProxy.mongooseInstances[this.data.dbName] == undefined) {
+            MongooseSingletonProxy.mongooseInstances[this.data.dbName] = new mongoose.Mongoose();
+            return MongooseSingletonProxy.mongooseInstances[this.data.dbName].connect(this.data.dbName, connectionOptions, (err: any) => {
+                return callback(err); // if no error then err = undefined
+            });
+        }
+    }
+
     getConnection() {
         return MongooseSingletonProxy.mongooseInstances[this.data.dbName];
     }

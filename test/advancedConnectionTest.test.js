@@ -12,9 +12,6 @@ const OnTheFlyRepositoryFactory = require('../lib/index').OnTheFlyRepositoryFact
 // test cases that must be passed before
 require('./crudOperations.test');
 
-
-OnTheFlyRepositoryFactory.loadModel(config.TestSchema1ModelLoading)
-
 describe("Advanced Connection tests", function () {
     this.timeout(20000);
 
@@ -22,6 +19,8 @@ describe("Advanced Connection tests", function () {
         let ret;
         let err;
         try {
+            ret = await OnTheFlyRepositoryFactory.generateOnTheFlyRepository(config.OkConfigSingletonOnlyUrl).openSingletonConnection(); // open without schema
+            OnTheFlyRepositoryFactory.loadModel(config.TestSchema1ModelLoading)
             ret = await OnTheFlyRepositoryFactory.generateOnTheFlyRepository(config.OkConfigSingletonTestSchema1).insert(config.InsertQueryTestSchema1);
             assert.notEqual(ret,  null || undefined)
             ret = await OnTheFlyRepositoryFactory.generateOnTheFlyRepository(config.OkConfigPrototypeTestSchema1).find(config.FindQueryTestSchema1);
@@ -29,16 +28,16 @@ describe("Advanced Connection tests", function () {
             ret = await OnTheFlyRepositoryFactory.generateOnTheFlyRepository(config.OkConfigPrototypeTestSchema1).update(config.UpdateQueryTestSchema1);
             assert.notEqual(ret,  null || undefined)
             assert.equal(ret.ok, 1)
-            ret = await OnTheFlyRepositoryFactory.generateOnTheFlyRepository(config.OkConfigSingletonTestSchema1).closeSingletonConnection();
+            ret = await OnTheFlyRepositoryFactory.generateOnTheFlyRepository(config.OkConfigSingletonTestSchema1).closeSingletonConnection(); // close with schema
             assert.notEqual(ret,  null || undefined)
-            ret = await OnTheFlyRepositoryFactory.generateOnTheFlyRepository(config.OkConfigPrototypeTestSchema1).find(config.FindQueryTestSchema1);
+            ret = await OnTheFlyRepositoryFactory.generateOnTheFlyRepository(config.OkConfigPrototypeTestSchema1).find(config.FindQueryTestSchema1); // open with schema
             assert.notEqual(ret,  null || undefined)
             ret = await OnTheFlyRepositoryFactory.generateOnTheFlyRepository(config.OkConfigSingletonTestSchema1).remove(config.RemoveQueryTestSchema1);
             assert.notEqual(ret,  null || undefined)
             assert.equal(ret.ok, 1)
             ret = await OnTheFlyRepositoryFactory.generateOnTheFlyRepository(config.OkConfigPrototypeTestSchema1).find(config.FindQueryTestSchema1);
             assert.notEqual(ret,  null || undefined)
-            ret = await OnTheFlyRepositoryFactory.generateOnTheFlyRepository(config.OkConfigSingletonTestSchema1).closeSingletonConnection();
+            ret = await OnTheFlyRepositoryFactory.generateOnTheFlyRepository(config.OkConfigSingletonOnlyUrl).closeSingletonConnection(); // close without schema
         } catch (e) {
             err = e;
         } finally {
