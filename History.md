@@ -1,4 +1,4 @@
-3.1.4 / 2019-01-02
+3.1.4 / 2019-01-05
 ===================
 * Feature; openSingletonConnection is now possible, just pass the url and the singleton to true, no schema is needed.
 
@@ -14,7 +14,7 @@
 * Updated; `config` with new parameters for test.
 * Updated; `advancedConnectionTest.test` with new test cases for open singleton connection.
 * Updated; `connection.test` with new test cases for open singleton connection.
-* Updated; `README.md` has `openSingletonConnection` reference.
+* Updated; `README.md` has `openSingletonConnection` reference and `version` reference on the `overview` part.
 
 3.1.3 / 2019-01-01
 ===================

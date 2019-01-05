@@ -132,7 +132,23 @@ The On The Fly Repository is added in the version 3 of `mongodb-repository-wmf` 
 
 Version 2 or Version 1 features will still works because the `backward compatibility is always guaranteed`. For these versions please see [Backward Compatibility](#Backward-Compatibility).
 
+*Here a list of the most relevant features introduced with the different versions*
+
+Since version `3.1.4` of `mongodb-repository-wmf` is possible to `open a singleton connection` without calling a CRUD operation.
+
+Since version `3.1.3` of `mongodb-repository-wmf` is possible to call the `closeSingletonConnetion` method without passing a valid schema name.
+
+Since version `3.1.3` of `mongodb-repository-wmf` the `Add All` functionality is added.
+
+Since version `3.1.3` `mongodb-repository-wmf` has is own `Error Type List`.
+
+Since version `3.1.3` of `mongodb-repository-wmf` the `mocha tests` are added.
+
+Since version `3.1.0` of `mongodb-repository-wmf` the operation `update` and `remove` will update and remove all matched elements and not only the first one.
+
 Since version `3.1.0` `mongodb-repository-wmf` is written in `typescript`.
+
+Since version `3.0.0` `mongodb-repository-wmf` use the `on the fly` created repository.
 ### Configure the On The Fly Repository
 To configure the On The Fly Repository you must invoke the generate method with a configuration JSON Object.
 ```javascript
@@ -171,7 +187,23 @@ OnTheFlyRepositoryFactory.generateOnTheFlyRepository({
 })
 ```
 ### Singleton Connection Strategy
-The singleton connection strategy will open a new connection only for the first CRUD operation and that connection will stay opened untill the `closeSingletonConnection` will be called. 
+The singleton connection strategy will open a new connection only when the first CRUD operation is called.
+
+Since version `3.1.4` of `mongodb-repository-wmf` is possible to open the singleton connection just invoking the `openSingletonConnection` method.
+
+```javascript
+MongoRepository.generateOnTheFlyRepository({ 
+    url: 'mongodb://localhost/test',  // use your connection string
+    // schema name is not needed to open the singleton connection
+    singleton: true, // singleton connection strategy
+}).openSingletonConnection().then(ret => {
+    console.log("connection successfully closed");
+}).catch(e => {
+     console.log(e)
+})
+```
+
+That connection will stay opened untill the `closeSingletonConnection` will be called. 
 
 Below is showed how to close a singleton connection:
 ```javascript
