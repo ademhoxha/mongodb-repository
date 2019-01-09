@@ -31,7 +31,6 @@
   },
   "bundleDependencies": false,
   "dependencies": {
-    "crypto": "^1.0.1",
     "mongoose": "^5.4.1"
   },
   "deprecated": false,
@@ -60,7 +59,11 @@
     "entities",
     "entity",
     "mongodb-entities",
-    "mongodb entities"
+    "mongodb entities",
+    "node repository",
+    "node-repository",
+    "node-mongodb-repository",
+    "node mongodb repository"
   ],
   "license": "MIT",
   "main": "lib/index.js",

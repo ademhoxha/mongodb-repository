@@ -197,7 +197,7 @@ MongoRepository.generateOnTheFlyRepository({
     // schema name is not needed to open the singleton connection
     singleton: true, // singleton connection strategy
 }).openSingletonConnection().then(ret => {
-    console.log("connection successfully closed");
+    console.log("connection successfully opened");
 }).catch(e => {
      console.log(e)
 })

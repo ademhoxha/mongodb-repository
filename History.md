@@ -1,3 +1,10 @@
+3.1.5 / 2019-01-09
+===================
+
+* Added; `crypto` removed as dependency.
+* Improved; `package.json` added new keywords.
+* Improved; `README` improved.
+
 3.1.4 / 2019-01-05
 ===================
 * Feature; openSingletonConnection is now possible, just pass the url and the singleton to true, no schema is needed.
